@@ -5,6 +5,20 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>مهدی جهان مرچ | مرجع مرچ‌های رسمی میم</title>
 <link rel="icon" type="image/svg+xml" href="images/favicon.svg"/>
+<script>
+// Works at / (local dev) and /<repo>/ (GitHub Pages project site)
+(function(){
+  const segs=location.pathname.split('/').filter(Boolean);
+  const known=['products','cart','about','contact','faq','shipping','returns','privacy','terms','blog','careers','press','category','product'];
+  let B='/';
+  if(segs.length && !known.includes(segs[0]) && segs[0]!=='404'){
+    B='/'+segs[0]+'/';
+    const be=document.createElement('base');be.href=B;document.head.appendChild(be);
+  }
+  window.__B=B;
+  window.__Bp=p=>B==='/'?p:B+p.replace(/^\//,'');
+})();
+</script>
 <style>
 @font-face{font-family:'YB';src:url('fonts/YekanBakh-Light.woff2') format('woff2');font-weight:300;font-display:swap}
 @font-face{font-family:'YB';src:url('fonts/YekanBakh-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
@@ -358,16 +372,27 @@ function toast(m){const t=document.getElementById('toast');t.textContent=m;t.cla
 function go(p){nav(p)}
 
 /* ============ ROUTER ============ */
+function curPath(){
+  const p=location.pathname;
+  const B=window.__B||'/';
+  if(B!=='/' && p.startsWith(B.slice(0,-1))) return p.slice(B.length-1)||'/';
+  if(B!=='/' && p===B.slice(0,-1)) return '/';
+  return p.replace(/\/+$/,'')||'/';
+}
 function nav(p){
-  if(location.pathname===p){render();return}
+  const full=window.__Bp(p);
+  if(location.pathname===full){render();return}
   const s=document.getElementById('swipe');s.classList.add('up');
-  setTimeout(()=>{history.pushState({},'',p);render();window.scrollTo(0,0);s.classList.remove('up');s.classList.add('down');setTimeout(()=>s.classList.remove('down'),560)},550)
+  setTimeout(()=>{history.pushState({},'',full);render();window.scrollTo(0,0);s.classList.remove('up');s.classList.add('down');setTimeout(()=>s.classList.remove('down'),560)},550)
 }
 window.addEventListener('popstate',()=>{render()});
 document.addEventListener('click',e=>{const a=e.target.closest('a[data-link]');if(a){e.preventDefault();nav(a.getAttribute('href'))}});
 window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',window.scrollY>20))
 window.addEventListener('keydown',e=>{if(e.key==='Escape'){/* future */}});
-(function(){const s=sessionStorage.redirect;if(s&&s!=='/'){try{sessionStorage.removeItem('redirect');history.replaceState({},'',s)}catch(e){}}})();
+(function(){
+  const s=sessionStorage.redirect;
+  if(s){try{sessionStorage.removeItem('redirect');history.replaceState({},'',window.__Bp(s.split('?')[0]))}catch(e){}}
+})();
 upd();
 
 function crumb(items){const b=document.getElementById('crumb');if(!items){b.innerHTML='';return}b.innerHTML=`<div class="crumb"><div class="ctn"><div class="crumb-in">${items.map((it,i)=>`${i?'<span class="s">/</span>':''}${it.h?`<a href="${it.h}" data-link>${it.t}</a>`:`<b>${it.t}</b>`}`).join('')}</div></div></div>`;document.getElementById('app').classList.add('crumb-on')}
@@ -513,7 +538,7 @@ const PAGE={
 
 function render(){
   upd();
-  const p=location.pathname.replace(/\/+$/,'')||'/';
+  const p=curPath();
   let h='';const app=document.getElementById('app');
   app.classList.remove('ready');
   if(p==='/'||p==='') h=PAGE.home();

@@ -1,2 +1,15 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><script>sessionStorage.redirect=location.pathname+location.search+location.hash;location.replace('/');</script></head><body></body></html>
+<html><head><meta charset="UTF-8"><script>
+// GitHub Pages SPA fallback: preserve deep link and redirect to base (with or without subpath)
+(function(){
+  var p=location.pathname+location.search+location.hash;
+  sessionStorage.redirect=p;
+  var segs=location.pathname.split('/').filter(Boolean);
+  // If first segment is the repo name (project site), redirect to /<repo>/
+  var target='/';
+  if(segs.length && !['products','cart','about','contact','faq','shipping','returns','privacy','terms','blog','careers','press','category','product','404'].includes(segs[0])){
+    target='/'+segs[0]+'/';
+  }
+  location.replace(target);
+})();
+</script></head><body></body></html>
