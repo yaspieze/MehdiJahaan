@@ -2,303 +2,426 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>خانه | مهدی جهان مرچ</title>
-<link rel="icon" type="image/svg+xml" href="images/favicon.svg"/>
-<link rel="stylesheet" href="assets/style.css"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#0a0612"/>
+<link rel="icon" type="image/png" href="images/favicon.png"/>
+<title>مهدی جهان | سایت رسمی</title>
+<style>
+@font-face{font-family:'YB';src:url('fonts/YekanBakh-Light.woff2') format('woff2');font-weight:300;font-display:swap}
+@font-face{font-family:'YB';src:url('fonts/YekanBakh-Light.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'YB';src:url('fonts/YekanBakh-Regular.woff2') format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:'YB';src:url('fonts/YekanBakh-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:'YB';src:url('fonts/YekanBakh-Bold.woff2') format('woff2');font-weight:700;font-display:swap}
+*{box-sizing:border-box;margin:0;padding:0;border:0}
+:root{
+  --bg:#0a0612;--bg2:#13081f;--bg3:#1c0d2f;--purple:#7e22ce;--purple2:#a855f7;--deep:#4c1d95;
+  --egg:#5b21b6;--accent:#c084fc;--orange:#f97316;--pink:#ec4899;
+  --fg:#f5f3ff;--fg2:#c4b5fd;--fg3:#8b7cb0;
+  --line:#2a1644;
+}
+html,body{background:var(--bg);color:var(--fg);font-family:'YB',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{min-height:100dvh}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;background:none;color:inherit}
+img{max-width:100%;display:block}
+.hidden{display:none!important}
+
+/* ============= LOADER / GATEWAY ============= */
+#gateway{position:fixed;inset:0;z-index:9999;background:radial-gradient(ellipse at center,#1a0b2e 0%,#05020a 70%);display:flex;align-items:center;justify-content:center;flex-direction:column;overflow:hidden}
+#gateway::before{content:'';position:absolute;inset:-20%;background:radial-gradient(circle at 50% 50%,rgba(168,85,247,.12) 0%,transparent 60%);animation:pulse 4s ease-in-out infinite}
+#gateway::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");pointer-events:none;opacity:.4;mix-blend-mode:overlay}
+@keyframes pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
+
+.gw-logo{width:min(180px,38vw);position:relative;z-index:2;transform:translateY(0);transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.gw-logo.shifted{transform:translateY(-70px)}
+.gw-logo img{width:100%;filter:drop-shadow(0 0 40px #a855f755) drop-shadow(0 0 80px #7e22ce33);animation:float 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.gw-logo::after{content:'';position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);width:60%;height:20px;background:radial-gradient(ellipse,rgba(168,85,247,.4) 0%,transparent 70%);filter:blur(12px)}
+
+.gw-form{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease;display:flex;flex-direction:column;align-items:center;gap:18px;z-index:2;width:min(360px,86vw);margin-top:30px}
+.gw-form.show{opacity:1;transform:translateY(0)}
+.gw-label{color:var(--fg2);font-size:14px;letter-spacing:.02em;text-align:center;font-weight:400;line-height:2}
+.gw-input-wrap{position:relative;width:100%}
+.gw-input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--fg);font-family:inherit;font-size:15px;text-align:center;outline:none;transition:.3s;backdrop-filter:blur(10px)}
+.gw-input:focus{border-color:var(--purple2);background:rgba(168,85,247,.06);box-shadow:0 0 0 4px rgba(168,85,247,.12)}
+.gw-input::placeholder{color:var(--fg3)}
+.gw-err{color:#f87171;font-size:12px;opacity:0;transition:opacity .3s;min-height:16px}
+.gw-err.show{opacity:1}
+
+.gw-success{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;opacity:0;transition:opacity .6s;pointer-events:none;z-index:3}
+.gw-success.show{opacity:1}
+.gw-success .txt{color:#c4ff5a;font-size:20px;font-weight:700;letter-spacing:.02em;text-shadow:0 0 30px #c4ff5a66}
+.gw-success .check{width:54px;height:54px;border-radius:50%;border:2px solid #c4ff5a;display:grid;place-items:center;box-shadow:0 0 40px #c4ff5a55;animation:pop .5s cubic-bezier(.2,1.5,.3,1)}
+@keyframes pop{0%{transform:scale(0)}100%{transform:scale(1)}}
+
+.gw-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:18px;opacity:0;pointer-events:none;transition:opacity .5s;z-index:4;background:radial-gradient(ellipse at center,#1a0b2e 0%,#05020a 70%)}
+.gw-loading.show{opacity:1}
+.gw-loading .lt{color:var(--fg2);font-size:15px;letter-spacing:.02em;animation:pulseText 1.5s ease-in-out infinite}
+.gw-loading .bar{width:min(280px,70vw);height:2px;background:#2a1644;border-radius:2px;overflow:hidden;position:relative}
+.gw-loading .bar i{position:absolute;inset:0;width:0;background:linear-gradient(90deg,var(--purple2),var(--pink));box-shadow:0 0 16px var(--purple2);animation:fillBar 6s ease-out forwards}
+@keyframes fillBar{to{width:100%}}
+@keyframes pulseText{0%,100%{opacity:.5}50%{opacity:1}}
+
+/* ============= MAIN SITE ============= */
+#site{opacity:0;transition:opacity .9s ease}
+#site.ready{opacity:1}
+
+/* NAV */
+.nav{position:fixed;top:0;inset-inline:0;z-index:100;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;transition:.4s}
+.nav.scrolled{background:#0a0612dd;backdrop-filter:blur(18px);border-bottom:1px solid var(--line);padding:12px 28px}
+.nav-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px}
+.nav-logo .egg{width:36px;height:36px;filter:drop-shadow(0 0 12px #a855f766)}
+.nav-links{display:flex;gap:28px;font-size:14px;color:var(--fg2)}
+.nav-links a{transition:.2s}
+.nav-links a:hover{color:var(--accent)}
+.nav-cta{padding:10px 20px;background:linear-gradient(135deg,var(--purple),var(--pink));border-radius:12px;font-size:13px;font-weight:600;color:#fff;transition:.3s;box-shadow:0 4px 20px #a855f740}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 30px #a855f760}
+@media(max-width:720px){.nav-links{display:none}}
+
+/* HERO */
+.hero{min-height:100dvh;position:relative;display:grid;place-items:center;padding:80px 28px 40px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg .glow1{position:absolute;top:-10%;inset-inline-start:-10%;width:60%;height:70%;background:radial-gradient(circle,rgba(126,34,206,.35),transparent 60%);filter:blur(60px);animation:drift 12s ease-in-out infinite}
+.hero-bg .glow2{position:absolute;bottom:-10%;inset-inline-end:-10%;width:55%;height:65%;background:radial-gradient(circle,rgba(236,72,153,.25),transparent 60%);filter:blur(60px);animation:drift 14s ease-in-out infinite reverse}
+.hero-bg .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(168,85,247,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(168,85,247,.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at center,#000 0%,transparent 70%)}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-20px)}}
+
+.hero-inner{position:relative;z-index:2;max-width:1200px;width:100%;display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:center}
+@media(max-width:900px){.hero-inner{grid-template-columns:1fr;text-align:center}}
+
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:100px;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.25);color:var(--accent);font-size:12px;font-weight:500;margin-bottom:20px;animation:fadeUp .8s ease both}
+.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:#c4ff5a;box-shadow:0 0 10px #c4ff5a;animation:blink 2s infinite}
+@keyframes blink{50%{opacity:.4}}
+
+.hero h1{font-size:clamp(42px,6.5vw,82px);font-weight:700;line-height:1.05;letter-spacing:-.02em;margin-bottom:20px;animation:fadeUp .9s .1s ease both}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--purple2),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero h1 .stroke{-webkit-text-stroke:2px var(--fg);color:transparent}
+.hero p{font-size:16px;line-height:2;color:var(--fg2);max-width:520px;margin-bottom:32px;animation:fadeUp 1s .2s ease both}
+@media(max-width:900px){.hero p{margin-inline:auto}}
+
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;animation:fadeUp 1.1s .3s ease both}
+@media(max-width:900px){.hero-btns{justify-content:center}}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;border-radius:14px;font-weight:600;font-size:14px;transition:.3s}
+.btn-primary{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;box-shadow:0 6px 24px #a855f744}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 40px #a855f766}
+.btn-ghost{background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--fg)}
+.btn-ghost:hover{border-color:var(--purple2);background:rgba(168,85,247,.08)}
+
+.hero-stats{display:flex;gap:30px;margin-top:40px;animation:fadeUp 1.2s .4s ease both}
+@media(max-width:900px){.hero-stats{justify-content:center}}
+.hs .n{font-size:28px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hs .l{font-size:12px;color:var(--fg3);margin-top:2px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+.hero-portrait{position:relative;animation:fadeUp 1s .2s ease both}
+.portrait-frame{position:relative;border-radius:32px;overflow:hidden;aspect-ratio:3/4;background:linear-gradient(135deg,var(--purple),var(--deep));box-shadow:0 30px 80px #7e22ce44,0 0 0 1px var(--line)}
+.portrait-frame img{width:100%;height:100%;object-fit:cover;filter:saturate(1.1) contrast(1.05)}
+.portrait-frame::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,#0a0612dd);pointer-events:none}
+.portrait-frame::before{content:'';position:absolute;inset:-2px;border-radius:34px;background:linear-gradient(135deg,var(--purple2),transparent 40%,var(--pink));z-index:-1;opacity:.6;filter:blur(14px)}
+.hero-portrait .tag{position:absolute;top:20px;inset-inline-end:20px;background:#000a;border:1px solid var(--line);backdrop-filter:blur(12px);padding:10px 14px;border-radius:12px;font-size:12px;display:flex;align-items:center;gap:8px}
+.hero-portrait .tag .red{width:8px;height:8px;border-radius:50%;background:#ef4444;animation:blink 1.5s infinite}
+.hero-portrait .icons{position:absolute;bottom:20px;inset-inline-start:20px;display:flex;gap:10px}
+.hero-portrait .ic{width:46px;height:46px;border-radius:12px;background:#000a;border:1px solid var(--line);backdrop-filter:blur(12px);display:grid;place-items:center;transition:.3s}
+.hero-portrait .ic:hover{border-color:var(--purple2);transform:translateY(-3px)}
+.hero-portrait .ic img{width:24px;height:24px;object-fit:contain}
+.floating{position:absolute;animation:floatBadge 5s ease-in-out infinite}
+.floating.f1{top:10%;inset-inline-start:-20px;background:linear-gradient(135deg,var(--purple),var(--pink));padding:10px 14px;border-radius:12px;font-size:12px;font-weight:600;box-shadow:0 10px 30px #a855f744}
+.floating.f2{bottom:20%;inset-inline-end:-30px;background:var(--bg3);border:1px solid var(--line);padding:10px 14px;border-radius:12px;font-size:12px;backdrop-filter:blur(10px);animation-delay:1.5s}
+@keyframes floatBadge{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+/* SECTIONS */
+section{padding:100px 28px;position:relative}
+.ctn{max-width:1200px;margin:0 auto}
+.sec-head{text-align:center;margin-bottom:60px}
+.sec-kicker{display:inline-block;color:var(--accent);font-size:13px;font-weight:600;letter-spacing:.1em;margin-bottom:12px;text-transform:uppercase}
+.sec-head h2{font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:-.01em;margin-bottom:14px}
+.sec-head p{color:var(--fg2);font-size:15px;max-width:600px;margin:0 auto;line-height:2}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+@media(max-width:900px){.about-grid{grid-template-columns:1fr}}
+.about-text p{color:var(--fg2);line-height:2.4;font-size:15px;margin-bottom:18px}
+.about-text p em{color:var(--fg);font-style:normal;font-weight:600}
+.about-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}
+.about-tags span{padding:6px 14px;border-radius:100px;background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.2);font-size:12px;color:var(--accent)}
+.about-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.acard{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--line);border-radius:20px;padding:24px;position:relative;overflow:hidden;transition:.3s}
+.acard:hover{transform:translateY(-4px);border-color:var(--purple)}
+.acard::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at top right,rgba(168,85,247,.15),transparent 60%);pointer-events:none}
+.acard .ic{width:46px;height:46px;border-radius:12px;background:rgba(168,85,247,.12);display:grid;place-items:center;margin-bottom:14px;font-size:24px}
+.acard h3{font-size:17px;margin-bottom:8px}
+.acard p{color:var(--fg2);font-size:13px;line-height:2}
+
+/* LINKS / BANNERS */
+.banners{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:900px){.banners{grid-template-columns:1fr}}
+.banner{border-radius:22px;padding:30px;position:relative;overflow:hidden;min-height:220px;display:flex;flex-direction:column;justify-content:space-between;transition:.3s;border:1px solid var(--line)}
+.banner:hover{transform:translateY(-4px) skewX(-1.5deg)}
+.banner.yt{background:linear-gradient(135deg,#7f1d1d33,#0a0612),radial-gradient(circle at top right,#ef444444,transparent 60%)}
+.banner.tg{background:linear-gradient(135deg,#1e3a8a33,#0a0612),radial-gradient(circle at top right,#3b82f644,transparent 60%)}
+.banner.ig{background:linear-gradient(135deg,#83184333,#0a0612),radial-gradient(circle at top right,#ec489944,transparent 60%)}
+.banner.shop{background:linear-gradient(135deg,#4c1d9544,#0a0612),radial-gradient(circle at top right,#a855f755,transparent 60%)}
+.banners-4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:900px){.banners-4{grid-template-columns:1fr 1fr}}
+.banner .b-icon{font-size:32px;margin-bottom:auto}
+.banner h3{font-size:20px;margin-bottom:6px}
+.banner p{color:var(--fg2);font-size:13px;margin-bottom:14px}
+.banner .arrow{color:var(--accent);font-size:22px;transition:.3s}
+.banner:hover .arrow{transform:translateX(-6px)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--line);padding:50px 28px 24px;text-align:center}
+footer .egg{width:48px;height:48px;margin:0 auto 14px;filter:drop-shadow(0 0 14px #a855f766)}
+footer h4{font-size:20px;margin-bottom:6px}
+footer p{color:var(--fg3);font-size:12px;margin-top:14px;letter-spacing:.15em;text-transform:uppercase}
+footer .social{display:flex;gap:10px;justify-content:center;margin-top:20px}
+footer .social a{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);display:grid;place-items:center;transition:.3s;color:var(--fg2)}
+footer .social a:hover{border-color:var(--purple2);color:var(--accent);transform:translateY(-2px)}
+</style>
 </head>
 <body>
-<div id="loader" aria-hidden="true">
-  <div class="topline">ســاخــتــه شــده تــوســط</div>
-  <div class="mark"><img src="images/gaslight.png" alt="Gaslight"/></div>
-  <div class="big"><span>گ</span><span>ـ</span><span>ـ</span><span>س</span><span>ـ</span><span>ـ</span><span>ل</span><span>ا</span><span>ی</span><span>ـ</span><span>ـ</span><span>ت</span><span>&nbsp;</span><span>ا</span><span>س</span><span>ـ</span><span>ـ</span><span>ت</span><span>ـ</span><span>ـ</span><span>و</span><span>د</span><span>ی</span><span>ـ</span><span>ـ</span><span>و</span></div>
-  <div class="bottomline">
-    <div class="row1">در حال ارسال به وبسایت مورد نظر</div>
-    <div class="row2">سرور گسلایت ← وبسایت مرچ مهدی جهان</div>
-  </div>
-  <div class="bar"></div>
-</div>
-<div id="app">
-<nav class="nav" id="nav"><div class="ctn"><div class="nav-in">
-  <a href="" data-link class="brand">
-    <div class="sq"><img src="images/gaslight.png" alt="M"/></div>
-    <div class="b-txt"><b>مهدی‌مرچ</b><span>MEHDI JAHAN MERCH</span></div>
-  </a>
-  <div class="divider"></div>
-  <div class="search">
-    <svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-    <input type="text" placeholder="دنبال چی می‌گردی؟ ادیتور ثروتمند؟ عینک قرمز؟ 🤡" readonly onclick="toast('جست‌وجو در حال بارگذاری توسط مهندس هوافضا 🚀')"/>
-  </div>
-  <div class="nav-act">
-    <button class="nb" onclick="toast('علاقه‌مندی‌ها هنوز آماده نیست 🍆')" aria-label="like"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></button>
-    <a class="nb" href="cart/" data-link aria-label="cart"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M6 6L5 3H2"/></svg><span class="badge" id="badge">0</span></a>
-  </div>
-</div></div></nav>
-<div class="topsp"></div>
-<div class="sub-bar" style="position:sticky;top:66px;background:var(--bg);z-index:50;border-bottom:1px solid var(--line)"><div class="ctn"><div class="sub"><a class="l on" data-link href=""><svg width="18" height="18" style="display:inline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg></svg>خانه</a><a class="l" data-link href="products/">محصولات</a><a class="l" data-link href="category/tshirts/">تیشرت</a><a class="l" data-link href="category/hoodies/">هودی</a><a class="l" data-link href="category/accessories/">اکسسوری</a><a class="l" data-link href="blog/">بلاگ</a><a class="l" data-link href="faq/">سؤالات</a><a class="l" data-link href="shipping/">ارسال</a><a class="l" data-link href="about/">درباره</a><a class="l" data-link href="contact/">تماس</a></div></div></div>
-<main class="page"><div class="ctn">
-<section><div class="hero-grid">
-  <div class="hero-banner">
-    <div class="hero-mascot"><svg viewBox="0 0 200 200"><use href="images/products.svg#egg"/></svg></div>
-    <div>
-      <h1>مرچ رسمی میم‌های <em>مهدی جهان</em><br/>رسیده به لشکر ۲۰۰۰ نفر</h1>
-      <p>تیشرت، هودی، ماگ، استیکر و همه چیزی که یک ادیتور ثروتمند برای خندیدن به مهدی نیاز داره. قیمت‌ها از ۱ میلیارد تومان شروع می‌شن (چرا که نه؟) 💸</p>
-      <div class="btns"><a class="btn p" href="products/" data-link>مشاهده محصولات ←</a><a class="btn g" href="about/" data-link>درباره ما</a></div>
+
+<!-- ================= GATEWAY ================= -->
+<div id="gateway">
+  <div class="gw-logo" id="gwLogo"><img src="images/gaslight.png" alt="Gaslight"/></div>
+  <div class="gw-form" id="gwForm">
+    <div class="gw-label">پسورد وبسایتی که میخواید بهش ورود کنید رو وارد کنید</div>
+    <div class="gw-input-wrap">
+      <input type="password" class="gw-input" id="gwInput" placeholder="••••••••••••" autocomplete="off" spellcheck="false"/>
     </div>
+    <div class="gw-err" id="gwErr">رمز وارد شده صحیح نیست</div>
   </div>
-  <div class="hero-stat lg">
-    <div><div class="n">35+</div><div class="t">محصول مختلف<br/>در ۸ دسته</div></div>
-    <div class="hero-feats">
-      <a class="feat o" href="category/tshirts/" data-link><span class="arr">←</span><div class="t">تیشرت‌های<br/>بادمجون 🍆</div></a>
-      <a class="feat k" href="category/accessories/" data-link><span class="arr">←</span><div class="t">اکسسوری<br/>لشکرکشی 🎯</div></a>
-      <a class="feat m" href="category/hoodies/" data-link><span class="arr">←</span><div class="t">هودی‌های<br/>ادیتوری 🧥</div></a>
-      <a class="feat b" href="category/poster/" data-link><span class="arr">←</span><div class="t">پوسترهای<br/>میم 🖼️</div></a>
+  <div class="gw-success" id="gwOk">
+    <div class="check">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c4ff5a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
     </div>
+    <div class="txt">عملیات با موفقیت انجام شد</div>
   </div>
-  <div class="hero-stat"><div class="n">∞</div><div class="t">تعداد خنده در هر ویدیو<br/>مهندس هوافضا ۱۰۰٪</div></div>
-</div></section>
-<section class="section"><div class="section-head"><div><h2>دسته‌بندی‌ها</h2><div class="sub-t">همه چیز برای طرفداران میم</div></div><a class="more" href="products/" data-link>همه محصولات ←</a></div>
-<div class="grid-c"><a class="cat" href="category/tshirts/" data-link style="background:radial-gradient(circle at 80% 20%,#c6ff0025 0%,transparent 55%),var(--bg2)">
-  <div><h3>تیشرت‌ها</h3><p>تیشرت‌های اصلی بادمجون و لشکر</p></div>
-  <div class="arr">←</div>
-  <div class="cg"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-tshirt"/></svg></div>
-</a><a class="cat" href="category/tshirts2/" data-link style="background:radial-gradient(circle at 80% 20%,#a78bfa25 0%,transparent 55%),var(--bg2)">
-  <div><h3>تیشرت‌های ویژه</h3><p>کالکشن محدود رنگی‌رنگی</p></div>
-  <div class="arr">←</div>
-  <div class="cg"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-tshirt2"/></svg></div>
-</a><a class="cat" href="category/hoodies/" data-link style="background:radial-gradient(circle at 80% 20%,#60a5fa25 0%,transparent 55%),var(--bg2)">
-  <div><h3>هودی‌ها</h3><p>هودی‌های گرم برای روزهای سرد آلمان</p></div>
-  <div class="arr">←</div>
-  <div class="cg"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-hoodie"/></svg></div>
-</a><a class="cat" href="category/mugs/" data-link style="background:radial-gradient(circle at 80% 20%,#fb923c25 0%,transparent 55%),var(--bg2)">
-  <div><h3>ماگ‌ها</h3><p>صبحونه‌ات رو با بادمجون بنوش</p></div>
-  <div class="arr">←</div>
-  <div class="cg"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-mug"/></svg></div>
-</a><a class="cat" href="category/caps/" data-link style="background:radial-gradient(circle at 80% 20%,#f472b625 0%,transparent 55%),var(--bg2)">
-  <div><h3>کلاه و کپ</h3><p>سرت رو با استایل لشکر بپوش</p></div>
-  <div class="arr">←</div>
-  <div class="cg"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-cap"/></svg></div>
-</a><a class="cat" href="category/stickers/" data-link style="background:radial-gradient(circle at 80% 20%,#c6ff0025 0%,transparent 55%),var(--bg2)">
-  <div><h3>استیکر</h3><p>بچسبون رو لپ‌تاپ، دیوار، آلمان</p></div>
-  <div class="arr">←</div>
-  <div class="cg"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-sticker"/></svg></div>
-</a><a class="cat" href="category/accessories/" data-link style="background:radial-gradient(circle at 80% 20%,#a78bfa25 0%,transparent 55%),var(--bg2)">
-  <div><h3>اکسسوری</h3><p>جاسوئیچی، توت‌بگ، جوراب، ماوس‌پد</p></div>
-  <div class="arr">←</div>
-  <div class="cg"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-tote"/></svg></div>
-</a><a class="cat" href="category/poster/" data-link style="background:radial-gradient(circle at 80% 20%,#fb923c25 0%,transparent 55%),var(--bg2)">
-  <div><h3>پوستر</h3><p>دیوار اتاقت رو میم کن</p></div>
-  <div class="arr">←</div>
-  <div class="cg"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-poster"/></svg></div>
-</a></div></section>
-<section class="section"><div class="section-head"><div><h2>داغ‌ترین‌ها 🔥</h2><div class="sub-t">پرفروش‌های همین هفته از لشکر</div></div><a class="more" href="products/" data-link>مشاهده همه ←</a></div>
-<div class="grid-p"><a class="card" href="product/tshirt-classic/" data-link>
-  <div class="th"><div class="bg" style="background:#c6ff0033"></div><span class="hot">داغ 🔥</span>
-    <div class="cv"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-tshirt"/></svg></div>
+  <div class="gw-loading" id="gwLoad">
+    <div class="lt">درحال انتقال به وبسایت مورد نظر</div>
+    <div class="bar"><i></i></div>
   </div>
-  <div class="info">
-    <div class="tt">تیشرت کلاسیک بادمجون</div>
-    <div class="pr"><div class="pri"><span class="u">3،200،000،000</span><svg class="toman" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7 2 4 6 4 11c0 5 3 10 8 11 5-1 8-6 8-11 0-5-3-9-8-9zm2.4 13.5h-1.6v2h-1.5v-2H9.7v-1.4h1.6v-1.7H9.7V11h1.6V7.5h1.6l-.1 3.5h1.6v1.4h-1.6v1.7h1.6v1.4z"/></svg></div>
-    <button class="add" onclick="event.preventDefault();event.stopPropagation();addCart('tshirt-classic')">+</button></div>
-  </div>
-</a><a class="card" href="product/tshirt-black/" data-link>
-  <div class="th"><div class="bg" style="background:#a78bfa33"></div><span class="hot">داغ 🔥</span>
-    <div class="cv"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-tshirt2"/></svg></div>
-  </div>
-  <div class="info">
-    <div class="tt">تیشرت مشکی لشکر ۲۰۰۰ نفری</div>
-    <div class="pr"><div class="pri"><span class="u">3،800،000،000</span><svg class="toman" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7 2 4 6 4 11c0 5 3 10 8 11 5-1 8-6 8-11 0-5-3-9-8-9zm2.4 13.5h-1.6v2h-1.5v-2H9.7v-1.4h1.6v-1.7H9.7V11h1.6V7.5h1.6l-.1 3.5h1.6v1.4h-1.6v1.7h1.6v1.4z"/></svg></div>
-    <button class="add" onclick="event.preventDefault();event.stopPropagation();addCart('tshirt-black')">+</button></div>
-  </div>
-</a><a class="card" href="product/tshirt-pink/" data-link>
-  <div class="th"><div class="bg" style="background:#f472b633"></div><span class="hot">داغ 🔥</span>
-    <div class="cv"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-tshirt"/></svg></div>
-  </div>
-  <div class="info">
-    <div class="tt">تیشرت صورتی مهندس هوافضا</div>
-    <div class="pr"><div class="pri"><span class="u">3،600،000،000</span><svg class="toman" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7 2 4 6 4 11c0 5 3 10 8 11 5-1 8-6 8-11 0-5-3-9-8-9zm2.4 13.5h-1.6v2h-1.5v-2H9.7v-1.4h1.6v-1.7H9.7V11h1.6V7.5h1.6l-.1 3.5h1.6v1.4h-1.6v1.7h1.6v1.4z"/></svg></div>
-    <button class="add" onclick="event.preventDefault();event.stopPropagation();addCart('tshirt-pink')">+</button></div>
-  </div>
-</a><a class="card" href="product/hoodie-dark/" data-link>
-  <div class="th"><div class="bg" style="background:#60a5fa33"></div><span class="hot">داغ 🔥</span>
-    <div class="cv"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-hoodie"/></svg></div>
-  </div>
-  <div class="info">
-    <div class="tt">هودی مشکی ادیتور ثروتمند</div>
-    <div class="pr"><div class="pri"><span class="u">8،500،000،000</span><svg class="toman" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7 2 4 6 4 11c0 5 3 10 8 11 5-1 8-6 8-11 0-5-3-9-8-9zm2.4 13.5h-1.6v2h-1.5v-2H9.7v-1.4h1.6v-1.7H9.7V11h1.6V7.5h1.6l-.1 3.5h1.6v1.4h-1.6v1.7h1.6v1.4z"/></svg></div>
-    <button class="add" onclick="event.preventDefault();event.stopPropagation();addCart('hoodie-dark')">+</button></div>
-  </div>
-</a><a class="card" href="product/mug-classic/" data-link>
-  <div class="th"><div class="bg" style="background:#fb923c33"></div><span class="hot">داغ 🔥</span>
-    <div class="cv"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-mug"/></svg></div>
-  </div>
-  <div class="info">
-    <div class="tt">ماگ بادمجون رییس</div>
-    <div class="pr"><div class="pri"><span class="u">1،200،000،000</span><svg class="toman" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7 2 4 6 4 11c0 5 3 10 8 11 5-1 8-6 8-11 0-5-3-9-8-9zm2.4 13.5h-1.6v2h-1.5v-2H9.7v-1.4h1.6v-1.7H9.7V11h1.6V7.5h1.6l-.1 3.5h1.6v1.4h-1.6v1.7h1.6v1.4z"/></svg></div>
-    <button class="add" onclick="event.preventDefault();event.stopPropagation();addCart('mug-classic')">+</button></div>
-  </div>
-</a><a class="card" href="product/cap-black/" data-link>
-  <div class="th"><div class="bg" style="background:#a78bfa33"></div><span class="hot">داغ 🔥</span>
-    <div class="cv"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-cap"/></svg></div>
-  </div>
-  <div class="info">
-    <div class="tt">کلاه کپ مشکی گسلایت</div>
-    <div class="pr"><div class="pri"><span class="u">2،100،000،000</span><svg class="toman" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7 2 4 6 4 11c0 5 3 10 8 11 5-1 8-6 8-11 0-5-3-9-8-9zm2.4 13.5h-1.6v2h-1.5v-2H9.7v-1.4h1.6v-1.7H9.7V11h1.6V7.5h1.6l-.1 3.5h1.6v1.4h-1.6v1.7h1.6v1.4z"/></svg></div>
-    <button class="add" onclick="event.preventDefault();event.stopPropagation();addCart('cap-black')">+</button></div>
-  </div>
-</a><a class="card" href="product/tote-egg/" data-link>
-  <div class="th"><div class="bg" style="background:#a78bfa33"></div><span class="hot">داغ 🔥</span>
-    <div class="cv"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-tote"/></svg></div>
-  </div>
-  <div class="info">
-    <div class="tt">توت‌بگ بادمجون</div>
-    <div class="pr"><div class="pri"><span class="u">1،500،000،000</span><svg class="toman" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7 2 4 6 4 11c0 5 3 10 8 11 5-1 8-6 8-11 0-5-3-9-8-9zm2.4 13.5h-1.6v2h-1.5v-2H9.7v-1.4h1.6v-1.7H9.7V11h1.6V7.5h1.6l-.1 3.5h1.6v1.4h-1.6v1.7h1.6v1.4z"/></svg></div>
-    <button class="add" onclick="event.preventDefault();event.stopPropagation();addCart('tote-egg')">+</button></div>
-  </div>
-</a><a class="card" href="product/sticker-pack/" data-link>
-  <div class="th"><div class="bg" style="background:#c6ff0033"></div><span class="hot">داغ 🔥</span>
-    <div class="cv"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-sticker"/></svg></div>
-  </div>
-  <div class="info">
-    <div class="tt">پک ۱۰ عددی استیکر میم</div>
-    <div class="pr"><div class="pri"><span class="u">450،000،000</span><svg class="toman" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7 2 4 6 4 11c0 5 3 10 8 11 5-1 8-6 8-11 0-5-3-9-8-9zm2.4 13.5h-1.6v2h-1.5v-2H9.7v-1.4h1.6v-1.7H9.7V11h1.6V7.5h1.6l-.1 3.5h1.6v1.4h-1.6v1.7h1.6v1.4z"/></svg></div>
-    <button class="add" onclick="event.preventDefault();event.stopPropagation();addCart('sticker-pack')">+</button></div>
-  </div>
-</a></div></section>
-<section class="section"><div class="section-head"><div><h2>محصولات جدید ✨</h2><div class="sub-t">کالکشن گسلایت استودیو</div></div></div>
-<div class="grid-p"><a class="card" href="product/tshirt-classic/" data-link>
-  <div class="th"><div class="bg" style="background:#c6ff0033"></div><span class="hot">داغ 🔥</span>
-    <div class="cv"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-tshirt"/></svg></div>
-  </div>
-  <div class="info">
-    <div class="tt">تیشرت کلاسیک بادمجون</div>
-    <div class="pr"><div class="pri"><span class="u">3،200،000،000</span><svg class="toman" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7 2 4 6 4 11c0 5 3 10 8 11 5-1 8-6 8-11 0-5-3-9-8-9zm2.4 13.5h-1.6v2h-1.5v-2H9.7v-1.4h1.6v-1.7H9.7V11h1.6V7.5h1.6l-.1 3.5h1.6v1.4h-1.6v1.7h1.6v1.4z"/></svg></div>
-    <button class="add" onclick="event.preventDefault();event.stopPropagation();addCart('tshirt-classic')">+</button></div>
-  </div>
-</a><a class="card" href="product/tshirt-black/" data-link>
-  <div class="th"><div class="bg" style="background:#a78bfa33"></div><span class="hot">داغ 🔥</span>
-    <div class="cv"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-tshirt2"/></svg></div>
-  </div>
-  <div class="info">
-    <div class="tt">تیشرت مشکی لشکر ۲۰۰۰ نفری</div>
-    <div class="pr"><div class="pri"><span class="u">3،800،000،000</span><svg class="toman" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7 2 4 6 4 11c0 5 3 10 8 11 5-1 8-6 8-11 0-5-3-9-8-9zm2.4 13.5h-1.6v2h-1.5v-2H9.7v-1.4h1.6v-1.7H9.7V11h1.6V7.5h1.6l-.1 3.5h1.6v1.4h-1.6v1.7h1.6v1.4z"/></svg></div>
-    <button class="add" onclick="event.preventDefault();event.stopPropagation();addCart('tshirt-black')">+</button></div>
-  </div>
-</a><a class="card" href="product/tshirt-lime/" data-link>
-  <div class="th"><div class="bg" style="background:#c6ff0033"></div>
-    <div class="cv"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-tshirt"/></svg></div>
-  </div>
-  <div class="info">
-    <div class="tt">تیشرت گسلایت سبز لیمویی</div>
-    <div class="pr"><div class="pri"><span class="u">3،500،000،000</span><svg class="toman" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7 2 4 6 4 11c0 5 3 10 8 11 5-1 8-6 8-11 0-5-3-9-8-9zm2.4 13.5h-1.6v2h-1.5v-2H9.7v-1.4h1.6v-1.7H9.7V11h1.6V7.5h1.6l-.1 3.5h1.6v1.4h-1.6v1.7h1.6v1.4z"/></svg></div>
-    <button class="add" onclick="event.preventDefault();event.stopPropagation();addCart('tshirt-lime')">+</button></div>
-  </div>
-</a><a class="card" href="product/tshirt-purple/" data-link>
-  <div class="th"><div class="bg" style="background:#a78bfa33"></div>
-    <div class="cv"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-tshirt2"/></svg></div>
-  </div>
-  <div class="info">
-    <div class="tt">تیشرت بنفش دیوار بن</div>
-    <div class="pr"><div class="pri"><span class="u">3،400،000،000</span><svg class="toman" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7 2 4 6 4 11c0 5 3 10 8 11 5-1 8-6 8-11 0-5-3-9-8-9zm2.4 13.5h-1.6v2h-1.5v-2H9.7v-1.4h1.6v-1.7H9.7V11h1.6V7.5h1.6l-.1 3.5h1.6v1.4h-1.6v1.7h1.6v1.4z"/></svg></div>
-    <button class="add" onclick="event.preventDefault();event.stopPropagation();addCart('tshirt-purple')">+</button></div>
-  </div>
-</a><a class="card" href="product/tshirt-pink/" data-link>
-  <div class="th"><div class="bg" style="background:#f472b633"></div><span class="hot">داغ 🔥</span>
-    <div class="cv"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-tshirt"/></svg></div>
-  </div>
-  <div class="info">
-    <div class="tt">تیشرت صورتی مهندس هوافضا</div>
-    <div class="pr"><div class="pri"><span class="u">3،600،000،000</span><svg class="toman" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7 2 4 6 4 11c0 5 3 10 8 11 5-1 8-6 8-11 0-5-3-9-8-9zm2.4 13.5h-1.6v2h-1.5v-2H9.7v-1.4h1.6v-1.7H9.7V11h1.6V7.5h1.6l-.1 3.5h1.6v1.4h-1.6v1.7h1.6v1.4z"/></svg></div>
-    <button class="add" onclick="event.preventDefault();event.stopPropagation();addCart('tshirt-pink')">+</button></div>
-  </div>
-</a><a class="card" href="product/tshirt-white/" data-link>
-  <div class="th"><div class="bg" style="background:#f5f7fa33"></div>
-    <div class="cv"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-tshirt2"/></svg></div>
-  </div>
-  <div class="info">
-    <div class="tt">تیشرت سفید آلمان را</div>
-    <div class="pr"><div class="pri"><span class="u">3،300،000،000</span><svg class="toman" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7 2 4 6 4 11c0 5 3 10 8 11 5-1 8-6 8-11 0-5-3-9-8-9zm2.4 13.5h-1.6v2h-1.5v-2H9.7v-1.4h1.6v-1.7H9.7V11h1.6V7.5h1.6l-.1 3.5h1.6v1.4h-1.6v1.7h1.6v1.4z"/></svg></div>
-    <button class="add" onclick="event.preventDefault();event.stopPropagation();addCart('tshirt-white')">+</button></div>
-  </div>
-</a><a class="card" href="product/tshirt-navy/" data-link>
-  <div class="th"><div class="bg" style="background:#60a5fa33"></div>
-    <div class="cv"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-tshirt"/></svg></div>
-  </div>
-  <div class="info">
-    <div class="tt">تیشرت سرمه‌ای ادیتور</div>
-    <div class="pr"><div class="pri"><span class="u">3،400،000،000</span><svg class="toman" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7 2 4 6 4 11c0 5 3 10 8 11 5-1 8-6 8-11 0-5-3-9-8-9zm2.4 13.5h-1.6v2h-1.5v-2H9.7v-1.4h1.6v-1.7H9.7V11h1.6V7.5h1.6l-.1 3.5h1.6v1.4h-1.6v1.7h1.6v1.4z"/></svg></div>
-    <button class="add" onclick="event.preventDefault();event.stopPropagation();addCart('tshirt-navy')">+</button></div>
-  </div>
-</a><a class="card" href="product/tshirt-orange/" data-link>
-  <div class="th"><div class="bg" style="background:#fb923c33"></div>
-    <div class="cv"><svg viewBox="0 0 200 200"><use href="images/products.svg#p-tshirt2"/></svg></div>
-  </div>
-  <div class="info">
-    <div class="tt">تیشرت نارنجی غروب</div>
-    <div class="pr"><div class="pri"><span class="u">3،500،000،000</span><svg class="toman" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7 2 4 6 4 11c0 5 3 10 8 11 5-1 8-6 8-11 0-5-3-9-8-9zm2.4 13.5h-1.6v2h-1.5v-2H9.7v-1.4h1.6v-1.7H9.7V11h1.6V7.5h1.6l-.1 3.5h1.6v1.4h-1.6v1.7h1.6v1.4z"/></svg></div>
-    <button class="add" onclick="event.preventDefault();event.stopPropagation();addCart('tshirt-orange')">+</button></div>
-  </div>
-</a></div></section>
-<section class="section"><div class="section-head"><h2>چرا مهدی‌مرچ؟</h2></div>
-<div class="grid-stats">
-  <div class="hero-stat"><div><div class="n">۱۰۰٪</div><div class="t">غیررسمی و فان</div></div></div>
-  <div class="hero-stat"><div><div class="n">35+</div><div class="t">محصول در رنگ‌های مختلف</div></div></div>
-  <div class="hero-stat"><div><div class="n">۲۴/۷</div><div class="t">توسط بادمجون‌ها پشتیبانی</div></div></div>
-  <div class="hero-stat"><div><div class="n">۱B+</div><div class="t">قیمت به تومان (شوخی)</div></div></div>
-</div></section></div></main>
 </div>
-<footer>
-<div class="ctn">
-  <div class="f-grid">
-    <div>
-      <a class="brand-big" href="" data-link>
-        <div class="sq"><img src="images/gaslight.png" alt="G"/></div>
-        <div><b>مهدی‌مرچ</b><span>MEHDI JAHAN MERCH</span></div>
-      </a>
-      <p class="f-desc">مرجع غیررسمی مرچ‌های میم و خنده‌دار مهدی جهان. این سایت فنه و توسط لشکر ۲۰۰۰ نفری ساخته شده. هیچ بادمجونی آزاری ندیده. 🍆</p>
-      <div class="soc">
-        <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h3l-7.5 8.6L22 22h-6.9l-5.4-7-6.2 7H.5l8-9.2L0 2z"/></svg></a>
-        <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
-        <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.2s-.2-1.6-.9-2.3c-.8-.9-1.8-.9-2.2-1C17 3.6 12 3.6 12 3.6s-5 0-7.9.3c-.4.1-1.4.1-2.2 1C1.2 5.6 1 7.2 1 7.2S.8 9 .8 10.8v1.8c0 1.8.2 3.6.2 3.6s.2 1.6.9 2.3c.8.9 1.9.9 2.4 1 1.8.2 7.7.3 7.7.3s5 0 7.9-.3c.4-.1 1.4-.1 2.2-1 .7-.7.9-2.3.9-2.3s.2-1.8.2-3.6v-1.8c0-1.8-.2-3.7-.2-3.7zM9.7 14.8V8.2L15.8 11.5l-6.1 3.3z"/></svg></a>
-        <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 3L2 10.5l6 2.2L20 5l-11 9.1-.4 5.9 2.6-2.5 6 4.4L22 3z"/></svg></a>
+
+<!-- ================= SITE ================= -->
+<div id="site">
+  <nav class="nav" id="nav">
+    <div class="nav-logo">
+      <img class="egg" src="images/mj/logo.png" alt="بادمجون‌گنگ"/>
+    </div>
+    <div class="nav-links">
+      <a href="#about">درباره من</a>
+      <a href="#links">لینک‌های من</a>
+      <a href="products/">فروشگاه</a>
+      <a href="#contact">تماس</a>
+    </div>
+    <a class="nav-cta" href="https://www.youtube.com/@mehdijahaan/videos" target="_blank" rel="noopener">ویدیوهای من ←</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="glow1"></div><div class="glow2"></div><div class="grid"></div>
+    </div>
+    <div class="hero-inner">
+      <div>
+        <div class="hero-badge"><span class="dot"></span>آنلاین هستم</div>
+        <h1>مهدی<br/><em>جهان</em> هستم</h1>
+        <p>یوتیوبر و استریمر. عاشق سوژه‌های عجیب، ساختن لحظه‌های خنده‌دار و ارتباط با آدم‌های مختلف. به بادمجون‌گنگ خوش اومدی. 🍆</p>
+        <div class="hero-btns">
+          <a class="btn btn-primary" href="https://www.youtube.com/@mehdijahaan/videos" target="_blank" rel="noopener">
+            ویدیوهای من
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="products/">فروشگاه مرچ</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hs"><div class="n">+۵۰۰K</div><div class="l">سابسکرایبر</div></div>
+          <div class="hs"><div class="n">+۱۰۰</div><div class="l">ویدیو</div></div>
+          <div class="hs"><div class="n">∞</div><div class="l">خنده</div></div>
+        </div>
+      </div>
+      <div class="hero-portrait">
+        <div class="floating f1">🍆 بادمجون</div>
+        <div class="floating f2">🕶️ گنگ</div>
+        <div class="portrait-frame">
+          <img src="images/mehdi-portrait.png" alt="مهدی جهان"/>
+        </div>
+        <div class="tag"><span class="red"></span>لایو روی یوتوب</div>
+        <div class="icons">
+          <a class="ic" href="https://www.youtube.com/@mehdijahaan/videos" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 24 24" fill="#ef4444"><path d="M23 7.2s-.2-1.6-.9-2.3c-.8-.9-1.8-.9-2.2-1C17 3.6 12 3.6 12 3.6s-5 0-7.9.3c-.4.1-1.4.1-2.2 1C1.2 5.6 1 7.2 1 7.2S.8 9 .8 10.8v1.8c0 1.8.2 3.6.2 3.6s.2 1.6.9 2.3c.8.9 1.9.9 2.4 1C5 19.7 10 20 10 20s5 0 7.9-.3c.4-.1 1.4-.1 2.2-1 .7-.7.9-2.3.9-2.3s.2-1.8.2-3.6v-1.8c0-1.8-.2-3.6-.2-3.6zM9.7 14.8V8.2L15.8 11.5l-6.1 3.3z"/></svg></a>
+          <a class="ic" href="https://t.me/" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 24 24" fill="#3b82f6"><path d="M22 3L2 10.5l6 2.2L20 5l-11 9.1-.4 5.9 2.6-2.5 6 4.4L22 3z"/></svg></a>
+          <a class="ic" href="https://instagram.com/" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#ec4899"/></svg></a>
+        </div>
       </div>
     </div>
-    <div class="f-col"><b>فروشگاه</b>
-      <a href="products/" data-link>همه محصولات</a>
-      <a href="category/tshirts/" data-link>تیشرت‌ها</a>
-      <a href="category/hoodies/" data-link>هودی‌ها</a>
-      <a href="category/accessories/" data-link>اکسسوری</a>
-      <a href="cart/" data-link>سبد خرید</a>
-      <a href="collections/" data-link>کالکشن‌ها</a>
-      <a href="gift-cards/" data-link>کارت هدیه</a>
+  </section>
+
+  <section id="about">
+    <div class="ctn">
+      <div class="sec-head">
+        <div class="sec-kicker">درباره من</div>
+        <h2>سلام، من مهدی‌ام</h2>
+        <p>تولیدکننده محتوای سرگرمی که عاشق پیدا کردن سوژه‌های عجیبه</p>
+      </div>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>من <em>مهدی جهان</em> هستم؛ یه تولیدکننده محتوای سرگرمی که عاشق پیدا کردن سوژه‌های عجیب، ساختن لحظه‌های خنده‌دار و ارتباط با آدم‌های مختلفه.</p>
+          <p>اینجا قراره بیشتر با من آشنا بشید؛ و در آینده علاوه بر محتوا، <em>مرچ و محصولات اختصاصی</em> خودمون رو هم خواهیم داشت — بادمجون‌گنگ رسمی. 🍆</p>
+          <p>هر هفته ویدیوهای جدید روی یوتوب، استریم‌های تصادفی روی توییچ و کلی خنده در اینستاگرام. با من همراه باش.</p>
+          <div class="about-tags">
+            <span>یوتیوبر</span><span>استریمر</span><span>کمدین</span><span>بادمجون</span><span>گنگ</span><span>میم</span>
+          </div>
+        </div>
+        <div class="about-cards">
+          <div class="acard">
+            <div class="ic">🎬</div>
+            <h3>تولید محتوا</h3>
+            <p>ویدیوهای سرگرمی، ولاگ و سوژه‌های عجیب هر هفته.</p>
+          </div>
+          <div class="acard">
+            <div class="ic">🍆</div>
+            <h3>مرچ اختصاصی</h3>
+            <p>تیشرت، هودی، ماگ و اکسسوری‌های بادمجون‌گنگ.</p>
+          </div>
+          <div class="acard">
+            <div class="ic">🎮</div>
+            <h3>استریم</h3>
+            <p>گیم‌پلی، چت و لحظات خنده‌دار زنده.</p>
+          </div>
+          <div class="acard">
+            <div class="ic">💜</div>
+            <h3>جامعه</h3>
+            <p>لشکر بادمجون‌ها در شبکه‌های اجتماعی.</p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="f-col"><b>پشتیبانی</b>
-      <a href="faq/" data-link>سؤالات متداول</a>
-      <a href="shipping/" data-link>اطلاعات ارسال</a>
-      <a href="returns/" data-link>شرایط بازگشت</a>
-      <a href="privacy/" data-link>حریم خصوصی</a>
-      <a href="terms/" data-link>قوانین</a>
-      <a href="track-order/" data-link>پیگیری سفارش</a>
-      <a href="size-guide/" data-link>راهنمای سایز</a>
-      <a href="help/" data-link>مرکز راهنما</a>
+  </section>
+
+  <section id="links">
+    <div class="ctn">
+      <div class="sec-head">
+        <div class="sec-kicker">لینک‌های من</div>
+        <h2>هر جایی که هستم</h2>
+        <p>دنبالم کن تا از آخرین ویدیوها و مرچ‌ها با خبر بمونی</p>
+      </div>
+      <div class="banners banners-4">
+        <a class="banner yt" href="https://www.youtube.com/@mehdijahaan/videos" target="_blank" rel="noopener">
+          <div class="b-icon">▶️</div>
+          <div><h3>یوتوب</h3><p>ویدیوهای اصلی</p></div>
+          <div class="arrow">←</div>
+        </a>
+        <a class="banner tg" href="#" target="_blank" rel="noopener">
+          <div class="b-icon">✈️</div>
+          <div><h3>تلگرام</h3><p>کانال لشکر</p></div>
+          <div class="arrow">←</div>
+        </a>
+        <a class="banner ig" href="#" target="_blank" rel="noopener">
+          <div class="b-icon">📷</div>
+          <div><h3>اینستاگرام</h3><p>عکس‌ها و استوری</p></div>
+          <div class="arrow">←</div>
+        </a>
+        <a class="banner shop" href="products/">
+          <div class="b-icon">🛍️</div>
+          <div><h3>فروشگاه</h3><p>مرچ بادمجون‌گنگ</p></div>
+          <div class="arrow">←</div>
+        </a>
+      </div>
     </div>
-    <div class="f-col"><b>کمپانی</b>
-      <a href="about/" data-link>درباره ما</a>
-      <a href="blog/" data-link>وبلاگ</a>
-      <a href="contact/" data-link>تماس با ما</a>
-      <a href="careers/" data-link>همکاری</a>
-      <a href="press/" data-link>مطبوعات</a>
-      <a href="news/" data-link>اخبار</a>
-      <a href="team/" data-link>تیم</a>
+  </section>
+
+  <footer id="contact">
+    <img class="egg" src="images/mj/logo.png" alt="بادمجون‌گنگ"/>
+    <h4>مهدی جهان</h4>
+    <p style="color:var(--fg2);font-size:13px;max-width:400px;margin:8px auto 0;line-height:2;letter-spacing:normal;text-transform:none">سایت رسمی مهدی جهان. برای همکاری از طریق دایرکت اینستاگرام در ارتباط باشید.</p>
+    <div class="social">
+      <a href="https://www.youtube.com/@mehdijahaan/videos" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.2s-.2-1.6-.9-2.3c-.8-.9-1.8-.9-2.2-1C17 3.6 12 3.6 12 3.6s-5 0-7.9.3c-.4.1-1.4.1-2.2 1C1.2 5.6 1 7.2 1 7.2S.8 9 .8 10.8v1.8c0 1.8.2 3.6.2 3.6s.2 1.6.9 2.3c.8.9 1.9.9 2.4 1C5 19.7 10 20 10 20s5 0 7.9-.3c.4-.1 1.4-.1 2.2-1 .7-.7.9-2.3.9-2.3s.2-1.8.2-3.6v-1.8c0-1.8-.2-3.7-.2-3.7zM9.7 14.8V8.2L15.8 11.5l-6.1 3.3z"/></svg></a>
+      <a href="#" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22 3L2 10.5l6 2.2L20 5l-11 9.1-.4 5.9 2.6-2.5 6 4.4L22 3z"/></svg></a>
+      <a href="#" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+      <a href="products/" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M6 6L5 3H2"/></svg></a>
     </div>
-  </div>
-  <div class="f-bot">
-    <div>© ۱۴۰۳ — تمام حقوق خنده‌های این سایت متعلق به لشکر ۲۰۰۰ نفری است. 🤣</div>
-    <div class="studio">GASLIGHT STUDIOS</div>
-  </div>
+    <p>© ۱۴۰۳ · GASLIGHT STUDIOS</p>
+  </footer>
 </div>
-</footer>
-<div id="swipe"></div>
-<div id="toast"></div>
-<script src="assets/app.js"></script>
-</body></html>
+
+<script>
+// Gateway logic
+(function(){
+  const logo=document.getElementById('gwLogo');
+  const form=document.getElementById('gwForm');
+  const input=document.getElementById('gwInput');
+  const err=document.getElementById('gwErr');
+  const ok=document.getElementById('gwOk');
+  const load=document.getElementById('gwLoad');
+  const site=document.getElementById('site');
+
+  // If user already authenticated in this session, skip to site
+  if(sessionStorage.getItem('gw_auth')==='1'){
+    document.getElementById('gateway').style.display='none';
+    site.classList.add('ready');
+    initSite();
+    return;
+  }
+
+  setTimeout(()=>logo.classList.add('shifted'),700);
+  setTimeout(()=>form.classList.add('show'),1100);
+  setTimeout(()=>input.focus(),1500);
+
+  input.addEventListener('input',()=>err.classList.remove('show'));
+  input.addEventListener('keydown',e=>{
+    if(e.key==='Enter') submit();
+  });
+
+  function submit(){
+    const v=input.value.trim().toLowerCase();
+    if(v==='mehdijahaan'){
+      sessionStorage.setItem('gw_auth','1');
+      form.classList.remove('show');
+      ok.classList.add('show');
+      setTimeout(()=>{
+        ok.style.opacity=0;
+        load.classList.add('show');
+        const dur=5000+Math.random()*5000;
+        const bar=load.querySelector('.bar i');
+        bar.style.animationDuration=dur+'ms';
+        setTimeout(()=>{
+          const gw=document.getElementById('gateway');
+          gw.style.transition='opacity .7s ease';
+          gw.style.opacity=0;
+          site.classList.add('ready');
+          setTimeout(()=>gw.style.display='none',700);
+          initSite();
+        },dur+200);
+      },900);
+    } else {
+      err.classList.add('show');
+      input.style.animation='shake .4s';
+      setTimeout(()=>input.style.animation='',400);
+    }
+  }
+  // expose for button if added later
+  window.__gwSubmit=submit;
+})();
+
+// shake keyframes
+const style=document.createElement('style');
+style.textContent='@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}';
+document.head.appendChild(style);
+
+function initSite(){
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>20));
+  // smooth scroll for in-page anchors
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',e=>{
+      const id=a.getAttribute('href');
+      if(id.length>1){
+        const el=document.querySelector(id);
+        if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth'})}
+      }
+    });
+  });
+}
+</script>
+</body>
+</html>

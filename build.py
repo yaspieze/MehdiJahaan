@@ -196,7 +196,7 @@ def page(title, active, crumbs, content, pre, is_root=False):
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>{title} | مهدی جهان مرچ</title>
-<link rel="icon" type="image/svg+xml" href="{pre}images/favicon.svg"/>
+<link rel="icon" type="image/png" href="{pre}images/favicon.png"/>
 <link rel="stylesheet" href="{pre}assets/style.css"/>
 </head>
 <body>
