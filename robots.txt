@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://yaspieze.github.io/mehdi-jahaan-merch/sitemap.xml
