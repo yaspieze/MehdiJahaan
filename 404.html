@@ -1,2 +1,7 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><script>location.replace("/");</script></head><body></body></html>
+<html><head><meta charset="UTF-8">
+<script>
+// SPA fallback — preserve deep link and redirect to root for client-side routing
+sessionStorage.redirect = location.pathname + location.search + location.hash;
+location.replace('/MehdiJahaan/');
+</script></head><body></body></html>
