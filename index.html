@@ -18,7 +18,15 @@
       @keyframes sp{to{transform:rotate(360deg)}}
       *,*::before,*::after{box-sizing:border-box}
     </style>
-    <base href="/MehdiJahaan/"/>
+    <script>
+      // Restore deep-link after 404.html SPA redirect
+      (function(){
+        var p=sessionStorage.redirect;
+        if(p){
+          try{sessionStorage.removeItem('redirect');history.replaceState({},'',p)}catch(e){}
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
