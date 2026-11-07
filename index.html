@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>مهدی جهان مرچ | مرجع مرچ‌های رسمی میم</title>
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg"/>
+<style>
+@font-face{font-family:'YB';src:url('fonts/YekanBakh-Light.woff2') format('woff2');font-weight:300;font-display:swap}
+@font-face{font-family:'YB';src:url('fonts/YekanBakh-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'YB';src:url('fonts/YekanBakh-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:'YB';src:url('fonts/YekanBakh-Bold.woff2') format('woff2');font-weight:700;font-display:swap}
+*{box-sizing:border-box;margin:0;padding:0;border:0}
+:root{
+  --bg:#0b0d10;--bg2:#14171d;--bg3:#1d2129;
+  --line:#232832;--line2:#2c3240;
+  --fg:#eef1f6;--fg2:#a2a8b5;--fg3:#6d7483;
+  --acc:#c6ff00;--acc2:#95bf00;
+  --danger:#ff3838;--warn:#ffaa00;--info:#3b82f6;--ok:#1ec26e;
+  --purp:#8b5cf6;--pink:#ff4f8b;
+  --radius:18px;--radius-sm:12px;--radius-lg:26px;
+  --shadow:0 20px 60px rgba(0,0,0,.45);
+  --mono:"YB","Segoe UI",sans-serif;
+}
+html,body{background:var(--bg);color:var(--fg);font-family:var(--mono);font-weight:400;-webkit-font-smoothing:antialiased}
+body{min-height:100dvh;overflow-x:hidden}
+body.loading{overflow:hidden}
+a{color:inherit;text-decoration:none}button{font-family:inherit;cursor:pointer;background:none;color:inherit}
+img,svg{display:block;max-width:100%}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--acc2);border-radius:20px}
+.ctn{width:min(1280px,92vw);margin:0 auto}
+
+/* ===== LOADER (Gaslight Studios) ===== */
+#loader{position:fixed;inset:0;z-index:999;background:#000;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity .7s ease,visibility .7s}
+#loader.gone{opacity:0;visibility:hidden}
+#loader .mark{width:min(420px,55vw);aspect-ratio:1/1;display:grid;place-items:center;position:relative}
+#loader .mark img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 40px #c6ff0022);animation:glitch 4s ease-in-out infinite}
+@keyframes glitch{0%,92%,100%{transform:translate(0,0);filter:drop-shadow(0 0 40px #c6ff0022)}93%{transform:translate(-3px,2px);filter:drop-shadow(0 0 40px #c6ff0055) hue-rotate(10deg)}95%{transform:translate(3px,-2px)}97%{transform:translate(-2px,-1px)}}
+#loader .topline{font-size:12px;letter-spacing:.5em;color:var(--fg3);margin-bottom:22px;font-weight:300;opacity:0;transition:opacity .7s}
+#loader .big{font-size:clamp(28px,6vw,68px);font-weight:700;letter-spacing:.08em;color:var(--fg);margin-top:10px;opacity:0;transition:opacity .9s;direction:rtl}
+#loader .big span{display:inline-block;opacity:0;transform:translateY(12px)}
+#loader .bottomline{position:absolute;bottom:6vh;right:8vw;text-align:right;direction:rtl}
+#loader .bottomline .row1{font-size:12px;letter-spacing:.2em;color:var(--fg3);margin-bottom:6px;opacity:0;transition:opacity .8s;font-weight:300}
+#loader .bottomline .row2{font-size:15px;color:var(--fg2);opacity:0;transition:opacity .8s}
+#loader .bar{position:absolute;bottom:0;left:0;height:2px;background:var(--acc);width:0;box-shadow:0 0 20px var(--acc)}
+
+/* ===== PAGE TRANSITION ===== */
+#swipe{position:fixed;inset:0;background:#000;z-index:500;transform:translateY(100%);transition:transform .55s cubic-bezier(.7,0,.3,1);pointer-events:none}
+#swipe.up{transform:translateY(0)}
+#swipe.down{transform:translateY(-100%)}
+#app{opacity:0;transition:opacity .5s ease}
+#app.ready{opacity:1}
+
+/* ===== NAVBAR ===== */
+.nav{position:fixed;top:0;inset-inline:0;z-index:50;padding:10px 0 14px;transition:background .25s,border-color .25s,backdrop-filter .25s;border-bottom:1px solid transparent}
+.nav.scrolled{background:#0b0d10d8;border-color:var(--line);backdrop-filter:blur(16px)}
+.nav-in{display:flex;align-items:center;gap:14px;height:72px}
+.brand{display:flex;align-items:center;gap:10px;padding-inline:6px;flex-shrink:0}
+.brand .sq{width:42px;height:42px;border-radius:10px;background:var(--bg2);border:1px solid var(--line2);display:grid;place-items:center;overflow:hidden}
+.brand .sq img{width:80%;height:80%;object-fit:contain;filter:invert(1)}
+.brand .b-txt{display:flex;flex-direction:column;line-height:1.2}
+.brand .b-txt b{font-size:18px;font-weight:700;letter-spacing:-.3px}
+.brand .b-txt span{font-size:10px;color:var(--fg3);font-weight:500}
+.divider{width:1px;height:28px;background:var(--line);flex-shrink:0}
+.search{flex:1;position:relative}
+.search input{width:100%;height:44px;border-radius:12px;background:var(--bg2);border:1px solid var(--line);padding:0 16px 0 46px;color:var(--fg);font-family:inherit;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s}
+.search input:focus{border-color:var(--acc);box-shadow:0 0 0 3px #c6ff0020}
+.search input::placeholder{color:var(--fg3)}
+.search .ic{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--fg3)}
+.nb{width:42px;height:42px;border-radius:12px;background:var(--bg2);border:1px solid var(--line);display:grid;place-items:center;color:var(--fg2);transition:.2s;position:relative;flex-shrink:0}
+.nb:hover{background:var(--acc);color:#000;border-color:var(--acc)}
+.nb .badge{position:absolute;top:4px;inset-inline-start:4px;min-width:18px;height:18px;border-radius:10px;background:var(--danger);color:#fff;font-size:10px;font-weight:700;display:grid;place-items:center;padding:0 5px}
+.sub{display:flex;align-items:center;gap:4px;margin-top:6px;overflow-x:auto;scrollbar-width:none}
+.sub::-webkit-scrollbar{display:none}
+.sub .l{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;font-weight:600;color:var(--fg3);border-radius:10px;cursor:pointer;font-size:14px;transition:.2s;white-space:nowrap}
+.sub .l:hover{color:var(--fg);background:var(--bg2)}
+.sub .l.on{color:var(--fg)}
+.mmenu{display:none}
+@media(max-width:900px){.search{display:none}.mmenu{display:grid;place-items:center}.brand{margin:0 auto}}
+
+/* ===== BREADCRUMB ===== */
+.crumb{background:#0f121790;border-bottom:1px solid var(--line);padding:12px 0;position:fixed;inset-inline:0;top:120px;z-index:30;backdrop-filter:blur(10px)}
+.crumb-in{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px}
+.crumb-in a{color:var(--fg3)}.crumb-in a:hover{color:var(--acc)}
+.crumb-in .s{color:var(--fg3);opacity:.5}
+.crumb-in b{font-size:14px}
+
+/* ===== PAGE ===== */
+.page{padding-top:140px;padding-bottom:60px}
+.page.crumb-on{padding-top:190px}
+
+/* ===== HERO ===== */
+.hero{border-radius:var(--radius-lg);overflow:hidden;position:relative;padding:56px;min-height:340px;display:flex;align-items:center;
+  background:
+  radial-gradient(900px 400px at 85% 30%,#c6ff0022,transparent 60%),
+  radial-gradient(700px 400px at 10% 90%,#8b5cf640,transparent 60%),
+  linear-gradient(135deg,#121418,#0a0c10);
+  border:1px solid var(--line);
+}
+.hero h1{font-size:clamp(28px,4.2vw,48px);font-weight:700;line-height:1.15;margin:14px 0;max-width:620px}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--acc),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--fg2);font-size:16px;margin-bottom:26px;max-width:520px;line-height:1.9}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;background:#c6ff0014;color:var(--acc);border:1px solid #c6ff0033}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:12px;font-weight:700;font-size:15px;transition:.2s;border:1px solid transparent;cursor:pointer;font-family:inherit}
+.btn.p{background:var(--acc);color:#000}.btn.p:hover{transform:translateY(-2px);box-shadow:0 10px 30px #c6ff0030}
+.btn.g{background:var(--bg2);color:var(--fg);border-color:var(--line)}.btn.g:hover{background:var(--bg3)}
+.hero .art{position:absolute;inset-inline-start:60%;inset:0;display:grid;place-items:center;pointer-events:none;filter:drop-shadow(0 20px 50px #c6ff0025)}
+.hero .art .egg{position:relative;width:min(380px,38vw);height:min(380px,38vw)}
+.hero .art .egg svg{width:100%;height:100%}
+.hero .actions{display:flex;gap:10px;flex-wrap:wrap}
+.hero-grid{display:flex;gap:14px;margin-bottom:10px}
+.hero-banner{flex:1}
+.hero-side{width:240px;display:flex;flex-direction:column;gap:12px}
+.feat{width:100%;height:160px;border-radius:var(--radius);padding:20px;position:relative;display:flex;align-items:flex-end;transition:.3s;border-bottom:0 solid var(--bdc);cursor:pointer}
+.feat:hover{transform:skewX(-2deg) translateY(-4px);border-bottom-width:8px}
+.feat.o{background:linear-gradient(135deg,#c6ff00,#95bf00);--bdc:#6b8a00}
+.feat.k{background:linear-gradient(135deg,#8b5cf6,#6d3fd8);--bdc:#4b2a9b}
+.feat .t{color:#000;font-weight:700;font-size:19px;line-height:1.4;text-align:right;width:100%}
+.feat.k .t{color:#fff}
+@media(max-width:1000px){.hero-grid{flex-direction:column}.hero-side{width:100%;flex-direction:row}.feat{flex:1}.hero .art{display:none}.hero{padding:32px;min-height:auto}}
+@media(max-width:640px){.hero-side{display:none}}
+
+/* ===== SECTION HEAD ===== */
+.sh{display:flex;align-items:center;justify-content:space-between;margin:48px 6px 20px}
+.sh h2{font-size:22px;font-weight:700}
+.sh a{color:var(--fg3);font-size:13px;font-weight:600;transition:.2s}.sh a:hover{color:var(--acc)}
+
+/* ===== CATEGORY GRID ===== */
+.cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+.cat{height:180px;border-radius:var(--radius);position:relative;overflow:hidden;transition:.3s cubic-bezier(.2,.9,.3,1.2);border:1px solid var(--line);cursor:pointer;background:var(--bg2);padding:18px;display:flex;flex-direction:column;justify-content:space-between}
+.cat:hover{transform:skewX(-2deg) translateY(-4px);border-color:var(--acc2)}
+.cat .ic{font-size:38px}
+.cat .n{font-size:15px;font-weight:700}
+.cat .arr{position:absolute;bottom:14px;inset-inline-start:14px;color:var(--acc);font-size:22px;transform:rotate(180deg);opacity:.8}
+
+/* ===== PRODUCT GRID ===== */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px}
+.card{padding-bottom:8px;transition:.2s;cursor:pointer}
+.card .th{position:relative;aspect-ratio:1/1;border-radius:32px;overflow:hidden;background:var(--bg2);border:1px solid var(--line)}
+.card .th .bg{position:absolute;inset:0;background:var(--tbg,#8b5cf622);filter:blur(40px);opacity:.5}
+.card .th .cv{position:relative;height:100%;display:grid;place-items:center;padding:16px}
+.card .th .cv svg{width:100%;height:100%;transition:.35s}
+.card:hover .th .cv svg{transform:scale(1.08)}
+.card .hot{position:absolute;top:12px;inset-inline-end:12px;background:var(--danger);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;z-index:2}
+.card .info{padding:8px}
+.card .tt{font-size:15px;font-weight:600;margin-top:10px;min-height:42px;line-height:1.5}
+.card .pr{display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:8px}
+.card .pri{display:flex;align-items:start;gap:4px;font-size:16px;color:var(--acc);font-weight:700}
+.card .pri .u{font-size:11px;color:var(--fg3);margin-inline-start:4px;font-weight:600}
+.card .pri svg{width:16px;height:20px;margin-top:2px;color:var(--fg3)}
+.add{width:36px;height:36px;border-radius:10px;background:var(--acc);color:#000;display:grid;place-items:center;font-size:22px;font-weight:700;transition:.2s;border:0}
+.add:hover{transform:scale(1.1) rotate(8deg)}
+
+/* ===== PDP ===== */
+.pdp{display:grid;grid-template-columns:1fr 1fr;gap:36px;padding:20px 0}
+.pdp .img{border-radius:var(--radius-lg);overflow:hidden;background:var(--bg2);border:1px solid var(--line);aspect-ratio:1/1;padding:30px;display:grid;place-items:center;position:relative}
+.pdp .img .bg{position:absolute;inset:0;background:var(--tbg,#8b5cf622);filter:blur(40px);opacity:.5}
+.pdp .img svg{width:100%;height:100%;position:relative}
+.pdp h1{font-size:28px;font-weight:700;margin:10px 0}
+.pdp .price{font-size:32px;font-weight:700;color:var(--acc);display:flex;align-items:center;gap:10px;margin:16px 0}
+.pdp .price svg{width:22px;height:26px}.pdp .price .b{font-size:14px;color:var(--fg3);font-weight:600}
+.pdp .desc{color:var(--fg2);margin:14px 0 22px;line-height:2}
+.spec{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:18px}
+.spec .r{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.spec .r:last-child{border-bottom:none}
+.spec .r span{color:var(--fg3)}
+.pdp .act{display:flex;gap:10px}
+@media(max-width:900px){.pdp{grid-template-columns:1fr}}
+
+/* ===== CART ===== */
+.ci{display:grid;grid-template-columns:90px 1fr auto;gap:16px;padding:16px;border-radius:14px;background:var(--bg2);border:1px solid var(--line);margin-bottom:10px;align-items:center}
+.ci .th{width:90px;height:90px;border-radius:14px;overflow:hidden;background:var(--bg)}
+.ci .th svg{width:100%;height:100%}
+.ci .t{font-weight:700;font-size:16px}.ci .p{color:var(--acc);font-weight:700;font-size:14px;margin-top:4px;display:flex;align-items:center;gap:4px}.ci .p svg{width:14px;height:16px}
+.ci .rm{color:var(--danger);font-size:12px;font-weight:600}
+.tot{background:#c6ff0010;border:1px solid #c6ff0040;padding:20px;border-radius:14px;margin-top:20px;display:flex;justify-content:space-between;align-items:center}
+.tot b{font-size:22px;color:var(--acc);display:flex;align-items:center;gap:8px}.tot b svg{width:22px;height:26px}
+
+/* ===== FOOTER (forgegui style) ===== */
+footer{margin-top:80px;border-top:1px solid var(--line);background:#07080a}
+.f-top{padding:60px 0 40px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+.brand-big .sq{width:56px;height:56px}
+.brand-big p{color:var(--fg3);font-size:13px;line-height:2;margin-top:14px;max-width:360px}
+.f-col b{display:block;font-size:14px;margin-bottom:16px;color:var(--fg)}
+.f-col a{display:block;color:var(--fg3);font-size:13px;padding:5px 0;transition:.2s}.f-col a:hover{color:var(--acc)}
+.f-socials{display:flex;gap:8px;margin-top:18px}
+.f-socials a{width:36px;height:36px;border-radius:10px;background:var(--bg2);display:grid;place-items:center;color:var(--fg2);transition:.2s}
+.f-socials a:hover{background:var(--acc);color:#000}
+.f-bottom{border-top:1px solid var(--line);padding:20px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--fg3)}
+.f-bottom .g{font-weight:700;color:var(--acc);letter-spacing:.1em}
+@media(max-width:767px){.f-top{grid-template-columns:1fr 1fr;gap:24px;padding:40px 0 30px}}
+
+/* ===== NOTICES ===== */
+.note{display:flex;align-items:flex-start;gap:10px;background:#c6ff0008;border:1px solid #c6ff0025;border-radius:12px;padding:16px;margin-top:26px;font-size:13px;color:var(--fg2);line-height:1.8}
+.note .ic{font-size:20px;color:var(--acc);margin-top:-2px}
+.note.d{background:#ff383808;border-color:#ff383825}.note.d .ic{color:var(--danger)}
+.empty{text-align:center;padding:80px 20px;color:var(--fg3)}.empty .big{font-size:80px;margin-bottom:10px}
+
+/* ===== STATIC PAGES ===== */
+.doc{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:36px;line-height:2.3}
+.doc h2{font-size:22px;margin:24px 0 8px;font-weight:700}
+.doc h2:first-child{margin-top:0}
+.doc p{color:var(--fg2);font-size:15px;margin:8px 0}
+.doc ul{list-style:disc;padding-inline-start:26px;color:var(--fg2);font-size:14px}
+.doc strong{color:var(--fg)}
+.tbl{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+.tbl td,.tbl th{padding:12px;border-bottom:1px solid var(--line);text-align:right}
+.tbl th{color:var(--fg3);font-weight:600;font-size:13px}
+.tbl td.col{color:var(--acc);font-weight:700}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:22px}
+.ci2{display:flex;align-items:center;gap:12px;padding:16px;border-radius:12px;background:var(--bg);border:1px solid var(--line)}
+.ci2 .i{width:42px;height:42px;border-radius:10px;background:#c6ff0015;display:grid;place-items:center;color:var(--acc);font-size:20px;flex-shrink:0}
+.ci2 b{font-size:14px;display:block}.ci2 span{font-size:11px;color:var(--fg3)}
+.kbd{background:var(--bg3);border:1px solid var(--line2);border-bottom-width:2px;padding:2px 8px;border-radius:6px;font-family:monospace;font-size:12px;color:var(--acc)}
+
+/* animations */
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+</style>
+</head>
+<body class="loading">
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="ic-home" viewBox="0 0 24 24" fill="currentColor"><path d="M3 12l9-9 9 9v9a2 2 0 01-2 2h-4v-7h-6v7H5a2 2 0 01-2-2z"/></symbol>
+<symbol id="ic-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol>
+<symbol id="ic-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></symbol>
+<symbol id="ic-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></symbol>
+<symbol id="ic-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
+<symbol id="toman" viewBox="0 0 24 23" fill="currentColor"><path d="M4.28 11.7c.58-.29 1-.58 1.45-1.02.3-.44.59-.88.88-1.33.15-.59.29-1.17.29-1.76h13.8c.9 0 1.6-.29 2.2-.74.4-.58.7-1.32.7-2.35V1h-1.9v3.4c0 .7-.4 1.1-1.2 1.1H6.9v-.7c0-.75-.1-1.2-.2-1.77 0-.44-.3-.88-.6-1.18-.3-.3-.5-.43-.8-.58-.4-.15-.9-.3-1.2-.3-.6 0-1-.1-1.4.1C2.2 1.5 1.8 1.6 1.7 2.1 1.4 2.4 1 2.7 1 3.2 1 3.6.8 4 .8 4.5.8 4.9.8 5.4.9 5.8c.2.45.3.75.5 1.05.3.14.6.43 1 .58.4.15.9.15 1.6.15h1.2c0 .3-.1.6-.1.9-.2.3-.5.6-.6.9-.1.1-.4.2-.8.3-.3.2-.7.3-1.2.3H.5v2h1.9c.7-.1 1.3-.3 1.9-.4zm-.3-6.2c-.6 0-.9 0-1.2-.3-.2-.2-.3-.5-.3-.9 0-.4.1-.8.3-1 .3-.2.6-.3 1-.3.4 0 .7.1 1 .4.3.3.3.8.3 1.4v.8H4v-.3z"/><path d="M19.3 1h-5.5v1.8h5.5V1z"/><path d="M23.5 16.3c-.1-.5-.3-.8-.6-1-.3-.3-.6-.6-1-.8-.3-.1-.8-.3-1.2-.3-.4 0-.9.1-1.3.3-.4.1-.7.4-1 .7-.3.3-.4.6-.6 1-.1.5-.1.9-.1 1.3v.5c0 .4-.1.6-.3.9-.3.1-.6.2-1 .2h-.6c-.3 0-.6-.1-.7-.3-.2-.3-.3-.6-.3-.9v-7.1h-1.9v7.4c0 .6 0 1 .1 1.3.2.3.3.6.6.9.3.1.5.4.9.4.3.1.6.1 1 .1h1c.3 0 .8-.1 1-.3.3-.1.7-.4.9-.9.3.5.6.8 1 .9.4.2.8.3 1.4.3.9 0 1.8-.3 2.3-.9.5-.6.8-1.5.8-2.5-.1-.6-.3-1-.4-1.4zm-2.8 2.8c-.4 0-.7-.1-.9-.3-.4-.3-.4-.6-.4-1 0-.4.1-.8.3-1 .1-.3.6-.5 1-.5.4 0 .8.1 1 .4.1.3.3.6.3 1-.1.9-.6 1.4-1.3 1.4z"/><path d="M9.1 16.3c0 .4 0 .7-.1 1.2-.2.3-.3.6-.5.9-.3.3-.6.4-.9.6-.3.2-.7.3-1.3.3H5c-.5 0-.9 0-1.3-.1-.3-.3-.6-.4-.8-.7-.1-.3-.4-.6-.4-.9-.1-.3-.1-.8-.1-1.2v-1.6H.5v1.8c0 1.5.4 2.6 1.2 3.5.7.9 1.7 1.3 3.2 1.3h1.4c.7 0 1.3-.1 1.9-.4.6-.3 1-.6 1.4-1.1.5-.4.7-1 .9-1.6.1-.6.3-1.2.3-1.9v-5.3l-1.9-.2v5.3zM6.9 14.2H4.7v2h2.2v-2z"/></symbol>
+</defs></svg>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="topline" id="ld-top">ســاخــتــه شــده تــوســط</div>
+  <div class="mark"><img src="images/gaslight.png" alt="Gaslight" id="ld-mark"/></div>
+  <div class="big" id="ld-big"></div>
+  <div class="bottomline">
+    <div class="row1" id="ld-b1">در حال ارسال به وبسایت مورد نظر</div>
+    <div class="row2" id="ld-b2">سرور گسلایت ← وبسایت مرچ مهدی جهان</div>
+  </div>
+  <div class="bar" id="ld-bar"></div>
+</div>
+
+<!-- Page swipe transition -->
+<div id="swipe"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="ctn">
+    <div class="nav-in">
+      <button class="nb mmenu" aria-label="menu"><svg width="20" height="20"><use href="#ic-menu"/></svg></button>
+      <a href="/" data-link class="brand">
+        <div class="sq"><img src="images/gaslight.png" alt="M"/></div>
+        <div class="b-txt"><b>مهدی‌مرچ</b><span>MEHDI JAHAN MERCH</span></div>
+      </a>
+      <div class="divider"></div>
+      <div class="search">
+        <svg class="ic" width="18" height="18"><use href="#ic-search"/></svg>
+        <input type="text" placeholder="دنبال چی می‌گردی؟ ادیتور ثروتمند؟ عینک قرمز؟ 🤡" readonly onclick="toast('جست‌وجو در حال بارگذاری توسط مهندس هوافضا 🚀')"/>
+      </div>
+      <button class="nb" onclick="toast('مهدی خودش تنها علاقه‌مندی ماست 🤡')"><svg width="20" height="20"><use href="#ic-heart"/></svg></button>
+      <button class="nb" onclick="go('/cart')"><svg width="20" height="20"><use href="#ic-cart"/></svg><span class="badge" id="badge">0</span></button>
+    </div>
+    <div class="sub" id="sub">
+      <a class="l" data-link href="/"><svg width="18" height="18"><use href="#ic-home"/></svg>خانه</a>
+      <a class="l" data-link href="/products">محصولات</a>
+      <a class="l" data-link href="/category/tshirts">تیشرت</a>
+      <a class="l" data-link href="/category/hoodies">هودی</a>
+      <a class="l" data-link href="/category/accessories">اکسسوری</a>
+      <a class="l" data-link href="/blog">بلاگ</a>
+      <a class="l" data-link href="/faq">سوالات متداول</a>
+      <a class="l" data-link href="/shipping">ارسال</a>
+      <a class="l" data-link href="/about">درباره ما</a>
+      <a class="l" data-link href="/contact">تماس</a>
+    </div>
+  </div>
+</nav>
+
+<div id="crumb"></div>
+<main id="app"></main>
+
+<footer>
+  <div class="ctn">
+    <div class="f-top">
+      <div>
+        <a href="/" data-link class="brand brand-big">
+          <div class="sq"><img src="images/gaslight.png" alt="M"/></div>
+          <div class="b-txt"><b>مهدی‌مرچ</b><span>MEHDI JAHAN MERCH</span></div>
+        </a>
+        <p>اولین و تنها مرجع رسمی (نه!) مرچ‌های خنده‌دار مهدی جهان. ساخته شده با عشق برای لشکر ۲۰۰۰ نفری 🤡 کلیه محصولات صرفاً جنبه میم و تفریح دارند.</p>
+        <div class="f-socials">
+          <a href="#" onclick="toast('رفیق تلگرام خود مهدیه 🤡');return false" aria-label="telegram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+          </a>
+          <a href="#" onclick="toast('سابسکرایب چنل اصلی 📺');return false" aria-label="youtube">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2c-.3-1.1-1.1-1.9-2.1-2.2C19.4 3.5 12 3.5 12 3.5s-7.4 0-9.4.5C1.6 4.3.8 5.1.5 6.2 0 8.3 0 12 0 12s0 3.7.5 5.8c.3 1.1 1.1 1.9 2.1 2.2 2 .5 9.4.5 9.4.5s7.4 0 9.4-.5c1.1-.3 1.9-1.1 2.1-2.2.5-2.1.5-5.8.5-5.8s0-3.7-.5-5.8zM9.6 15.6V8.4L15.8 12l-6.2 3.6z"/></svg>
+          </a>
+          <a href="#" onclick="toast('اینستاگرام واقعی نیست 😂');return false" aria-label="instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.4A4 4 0 1 1 12.6 8 4 4 0 0 1 16 11.4z"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>
+          </a>
+          <a href="#" onclick="toast('کیک مهدی: mehdijahaan');return false" aria-label="kick">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4 2h16v20l-4-4h-3l-3-3 6-6H7v13H4z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="f-col"><b>فروشگاه</b><a data-link href="/products">همه محصولات</a><a data-link href="/category/tshirts">تیشرت‌ها</a><a data-link href="/category/hoodies">هودی‌ها</a><a data-link href="/category/accessories">اکسسوری</a><a data-link href="/cart">سبد خرید</a></div>
+      <div class="f-col"><b>پشتیبانی</b><a data-link href="/faq">سؤالات متداول</a><a data-link href="/shipping">اطلاعات ارسال</a><a data-link href="/returns">شرایط بازگشت</a><a data-link href="/privacy">حریم خصوصی</a><a data-link href="/terms">قوانین</a></div>
+      <div class="f-col"><b>کمپانی</b><a data-link href="/about">درباره ما</a><a data-link href="/blog">وبلاگ</a><a data-link href="/contact">تماس با ما</a><a data-link href="/careers">همکاری</a><a data-link href="/press">مطبوعات</a></div>
+    </div>
+    <div class="f-bottom">
+      <div>© ۱۴۰۵ مهدی‌مرچ — کلیه حقوق این وبسایت (البته که) محفوظ است. 🤡 سایت غیررسمی، صرفاً فان.</div>
+      <div class="g">GASLIGHT STUDIOS</div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="images/products.svg"></script>
+<script>
+/* ============ DATA ============ */
+const CATS=[
+  {s:"tshirts",n:"تیشرت‌ها",i:"👕",t:"#8b5cf6",f:"p-tshirt"},
+  {s:"tshirts2",n:"تیشرت طنز",i:"🤣",t:"#d9a85f",f:"p-tshirt2"},
+  {s:"hoodies",n:"هودی‌ها",i:"🧥",t:"#c6ff00",f:"p-hoodie"},
+  {s:"mugs",n:"ماگ‌ها",i:"☕",t:"#ff4f8b",f:"p-mug"},
+  {s:"caps",n:"کلاه",i:"🧢",t:"#ffaa00",f:"p-cap"},
+  {s:"stickers",n:"استیکر",i:"🏷️",t:"#1ec26e",f:"p-sticker"},
+  {s:"accessories",n:"اکسسوری",i:"🔑",t:"#3b82f6",f:"p-keychain"},
+  {s:"poster",n:"پوستر",i:"🖼️",t:"#ff4f8b",f:"p-poster"},
+];
+const PRODS=[
+  {s:"t-classic",t:"تیشرت کلاسیک بادمجون 🍆",c:"tshirts",p:1850000000000,h:true,d:"تیشرت مشکی پنبه‌ای با بادمجون عینکی مهدی.",f:"p-tshirt"},
+  {s:"t-divar",t:"تیشرت معلم زبان دیواری 🤣",c:"tshirts2",p:2400000000000,h:true,d:"همون تیشرتی که باعث شد مهدی از دیوار بن شه.",f:"p-tshirt2"},
+  {s:"h-jahan",t:"هودی خانواده جهان 🧥",c:"hoodies",p:4200000000000,h:true,d:"هودی مشکی با بند لایم‌گرین برای طرفداران جهان فمیلی.",f:"p-hoodie"},
+  {s:"m-editor",t:"ماگ ادیتور ثروتمند ☕",c:"mugs",p:980000000000,d:"هر سری بخندی یه قلپ بخور و ادیتورت ثروتمندتر میشه.",f:"p-mug"},
+  {s:"cap-glasses",t:"کلاه عینک قرمز 🧢",c:"caps",p:1200000000000,d:"کلاه مشکی با طرح عینک سبز گسلایت.",f:"p-cap"},
+  {s:"t-lashkar",t:"توت بگ لشکر ۲۰۰۰ نفری 🎒",c:"accessories",p:1550000000000,h:true,d:"بگ پارچه‌ای برای حمل لشکر ۲۰۰۰ نفری.",f:"p-tote"},
+  {s:"st-aparat",t:"استیکر آپاراتر شدم 😂",c:"stickers",p:350000000000,d:"بچسبون روی لپ‌تاپ و رسماً آپاراتر شو.",f:"p-sticker"},
+  {s:"a-mask",t:"ماسک صورت عینکی 😷",c:"accessories",p:720000000000,d:"ماسک مشکی با طرح عینک لایم‌گرین.",f:"p-mask"},
+  {s:"a-rocket",t:"جوراب مهندس هوافضا 🧦",c:"accessories",p:490000000000,d:"جوراب مشکی با راکت هواپیما - Aerospace enginner!",f:"p-socks"},
+  {s:"a-phone",t:"کاور گوشی بدون پول 📱",c:"accessories",p:1100000000000,d:"کاور گوشی برای کسایی که بدون پول گوشی می‌خرن.",f:"p-phone"},
+  {s:"a-mousepad",t:"ماوس پد لشکرکشی 🖱️",c:"accessories",p:890000000000,d:"ماوس پد گیمینگ برای رید دادن به استریم‌های آپارات.",f:"p-mousepad"},
+  {s:"p-aero",t:"پوستر مهندس هوافضا 🚀",c:"poster",p:3100000000000,h:true,d:"پوستر سایز بزرگ - Youtuber & Editor & Streamer & Aerospace enginner!",f:"p-poster"},
+  {s:"a-key",t:"جاکلیدی ادیتور ثروتمند 🔑",c:"accessories",p:280000000000,d:"جاکلیدی طنز.",f:"p-keychain"},
+];
+function fp(n){if(n>=1e12)return (n/1e12).toLocaleString('fa-IR')+' بیلیارد';if(n>=1e9)return (n/1e9).toLocaleString('fa-IR')+' میلیارد';if(n>=1e6)return (n/1e6).toLocaleString('fa-IR')+' میلیون';return n.toLocaleString('fa-IR')}
+const TOMAN=`<svg viewBox="0 0 24 23" fill="currentColor"><use href="#toman"/></svg>`;
+const TINT={p_tshirt:"#8b5cf6",p_tshirt2:"#d9a85f",p_hoodie:"#c6ff00",p_mug:"#ff4f8b",p_cap:"#ffaa00",p_tote:"#8b5cf6",p_sticker:"#1ec26e",p_mask:"#ff3838",p_socks:"#c6ff00",p_phone:"#c6ff00",p_mousepad:"#8b5cf6",p_poster:"#ff4f8b",p_keychain:"#c6ff00"};
+function tintOf(sym){return TINT[sym.replace("-","_")]||"#8b5cf6"}
+function card(p){return `<a class="card" href="/product/${p.s}" data-link><div class="th"><div class="bg" style="background:${tintOf(p.f)}33"></div>${p.h?'<span class="hot">داغ 🔥</span>':''}<div class="cv"><svg viewBox="0 0 200 200"><use href="images/products.svg#${p.f}"/></svg></div></div><div class="info"><div class="tt">${p.t}</div><div class="pr"><div class="pri"><span class="u">${fp(p.p)}</span>${TOMAN}</div><button class="add" onclick="event.preventDefault();event.stopPropagation();add('${p.s}')">+</button></div></div></a>`}
+function cartGet(){try{return JSON.parse(localStorage.getItem('mm_cart')||'[]')}catch(e){return[]}}
+function cartSet(c){localStorage.setItem('mm_cart',JSON.stringify(c));upd()}
+function upd(){document.getElementById('badge').textContent=cartGet().length}
+function add(s){const c=cartGet();if(!c.includes(s))c.push(s);cartSet(c);toast('به سبد اضافه شد 🛒💸')}
+function rem(s){cartSet(cartGet().filter(x=>x!==s));render()}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('show'),1800)}
+function go(p){nav(p)}
+
+/* ============ ROUTER ============ */
+function nav(p){
+  if(location.pathname===p){render();return}
+  const s=document.getElementById('swipe');s.classList.add('up');
+  setTimeout(()=>{history.pushState({},'',p);render();window.scrollTo(0,0);s.classList.remove('up');s.classList.add('down');setTimeout(()=>s.classList.remove('down'),560)},550)
+}
+window.addEventListener('popstate',()=>{render()});
+document.addEventListener('click',e=>{const a=e.target.closest('a[data-link]');if(a){e.preventDefault();nav(a.getAttribute('href'))}});
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',window.scrollY>20))
+window.addEventListener('keydown',e=>{if(e.key==='Escape'){/* future */}});
+(function(){const s=sessionStorage.redirect;if(s&&s!=='/'){try{sessionStorage.removeItem('redirect');history.replaceState({},'',s)}catch(e){}}})();
+upd();
+
+function crumb(items){const b=document.getElementById('crumb');if(!items){b.innerHTML='';return}b.innerHTML=`<div class="crumb"><div class="ctn"><div class="crumb-in">${items.map((it,i)=>`${i?'<span class="s">/</span>':''}${it.h?`<a href="${it.h}" data-link>${it.t}</a>`:`<b>${it.t}</b>`}`).join('')}</div></div></div>`;document.getElementById('app').classList.add('crumb-on')}
+function noCrumb(){document.getElementById('crumb').innerHTML='';document.getElementById('app').classList.remove('crumb-on')}
+
+/* ============ PAGES ============ */
+const PAGE={
+  home:()=>{noCrumb();
+    const hot=PRODS.filter(p=>p.h);
+    return `<div class="page"><div class="ctn">
+      <div class="hero-grid">
+        <div class="hero-banner">
+          <div class="hero">
+            <div style="position:relative;z-index:2">
+              <div class="badge">🤡 غیررسمی • فقط برای خنده • GASLIGHT</div>
+              <h1>مرچ رسمی <em>بادمجون‌مهدی</em><br/>که اصلاً رسمی نیست!</h1>
+              <p>تیشرت، هودی، ماگ و کلی مرچ خنده‌دار از بادمجون عینکی مهدی جهان - همه چیز بیشتر از ۱ میلیارد تومان، دقیقاً مثل درآمد ادیتورش 💀</p>
+              <div class="actions">
+                <a class="btn p" href="/products" data-link>مشاهده محصولات ←</a>
+                <a class="btn g" href="/about" data-link>درباره ما</a>
+              </div>
+            </div>
+            <div class="art"><div class="egg"><svg viewBox="0 0 200 200"><use href="images/products.svg#egg" x="100" y="100" width="160" height="180"/></svg></div></div>
+          </div>
+        </div>
+        <div class="hero-side">
+          <a class="feat o" data-link href="/category/tshirts"><div class="t">تیشرت‌های<br/>بادمجون 🍆</div></a>
+          <a class="feat k" data-link href="/category/accessories"><div class="t">اکسسوری<br/>لشکرکشی 🎯</div></a>
+        </div>
+      </div>
+      <div class="sh"><h2>📂 دسته‌بندی‌ها</h2><a href="/products" data-link>همه ←</a></div>
+      <div class="cats">${CATS.map(c=>`<a class="cat" style="--catc:${c.t}" href="/category/${c.s}" data-link><div class="ic">${c.i}</div><div class="n">${c.n}</div><div class="arr">←</div></a>`).join('')}</div>
+      <div class="sh"><h2>🔥 محصولات داغ</h2><a href="/products" data-link>همه ←</a></div>
+      <div class="grid">${hot.map(card).join('')}</div>
+      <div class="sh"><h2>💀 جدیدترین‌ها</h2></div>
+      <div class="grid">${PRODS.slice(0,8).map(card).join('')}</div>
+      <div class="note"><span class="ic">⚠️</span><div><strong>توجه مهم:</strong> این یک سایت فان و میم است. هیچکدوم از محصولات واقعاً وجود ندارن. هیچ پولی به حساب مهدی واریز نمی‌شه. شما نمی‌تونید اینا رو بپوشید و مثل مهدی از دیوار بن بشید. 🤡</div></div>
+    </div></div>`;
+  },
+  products:(filter)=>{const list=filter?PRODS.filter(p=>p.c===filter):PRODS;const cat=CATS.find(c=>c.s===filter);
+    crumb([{h:'/',t:'خانه'},{h:'/products',t:'محصولات'},...(cat?[{t:cat.n}]:[])]);
+    return `<div class="page crumb-on"><div class="ctn">
+      <div class="sh" style="margin-top:0"><h2>${cat?cat.i+' '+cat.n:'همه محصولات'} (${list.length})</h2></div>
+      ${list.length?`<div class="grid">${list.map(card).join('')}</div>`:`<div class="empty"><div class="big">💀</div><p>چیزی پیدا نشد.</p></div>`}
+    </div></div>`;
+  },
+  product:(slug)=>{const p=PRODS.find(x=>x.s===slug);if(!p)return PAGE[404]();
+    crumb([{h:'/',t:'خانه'},{h:'/products',t:'محصولات'},{t:p.t}]);
+    return `<div class="page crumb-on"><div class="ctn"><div class="pdp">
+      <div class="img" style="--tbg:${tintOf(p.f)}33"><div class="bg"></div><svg viewBox="0 0 200 200"><use href="images/products.svg#${p.f}"/></svg></div>
+      <div><div style="color:var(--fg3);font-size:13px">${(CATS.find(c=>c.s===p.c)||{}).n||''}</div><h1>${p.t}</h1>
+        <div class="price">${fp(p.p)} ${TOMAN}<span class="b">تومان</span></div>
+        <div class="desc">${p.d}</div>
+        <div class="spec">
+          <div class="r"><span>کیفیت چاپ</span><b>درجه بادمجون (۴K 🍆)</b></div>
+          <div class="r"><span>جنس</span><b>پنبه Aerospace 🚀</b></div>
+          <div class="r"><span>کشور تولید</span><b>آلمان (طبق بیو) 🇩🇪</b></div>
+          <div class="r"><span>زمان تحویل</span><b>همون لحظه که لشکر برسن</b></div>
+          <div class="r"><span>ضمانت</span><b>اگر بخندی ادیتور ثروتمند میشه 🤣</b></div>
+        </div>
+        <div class="act"><button class="btn p" onclick="add('${p.s}')">افزودن به سبد 🛒</button><a class="btn g" href="/products" data-link>بازگشت</a></div>
+        <div class="note"><span class="ic">🤡</span><div><strong>یادتون باشه:</strong> این محصول واقعی نیست. نگران پولتون نباشید.</div></div>
+      </div>
+    </div></div></div>`;
+  },
+  cart:()=>{crumb([{h:'/',t:'خانه'},{t:'سبد خرید'}]);
+    const items=cartGet().map(s=>PRODS.find(p=>p.s===s)).filter(Boolean);const tot=items.reduce((s,p)=>s+p.p,0);
+    return `<div class="page crumb-on"><div class="ctn">
+      <div class="sh" style="margin-top:0"><h2>🛒 سبد خرید شما</h2></div>
+      ${items.length===0?`<div class="empty"><div class="big">💸</div><p>سبد خریدت خالیه. برو یه چیزی از بادمجون بخر!</p><a class="btn p" style="margin-top:20px;display:inline-flex" href="/products" data-link>شروع خرید ←</a></div>:
+      `${items.map(p=>`<div class="ci"><div class="th"><svg viewBox="0 0 200 200"><use href="images/products.svg#${p.f}"/></svg></div><div><div class="t">${p.t}</div><div class="p">${fp(p.p)} تومان ${TOMAN}</div></div><button class="rm" onclick="rem('${p.s}')">حذف ✕</button></div>`).join('')}
+      <div class="tot"><div>جمع کل شما:</div><b>${fp(tot)} تومان ${TOMAN}</b></div>
+      <div style="margin-top:16px;text-align:center"><button class="btn p" onclick="toast('در حال انتقال به درگاه مهندسی هوافضا 🚀')">پرداخت (که اصلاً واقعی نیست 💀)</button></div>
+      <div class="note d"><span class="ic">🤡</span><div>این سبد خرید مثل درآمد یوتیوب واقعی نیست.</div>`}
+    </div></div>`;
+  },
+  about:()=>{crumb([{h:'/',t:'خانه'},{t:'درباره ما'}]);
+    return `<div class="page crumb-on"><div class="ctn"><div class="doc">
+      <h2>درباره مهدی‌مرچ 🤡</h2>
+      <p>مهدی‌مرچ یک فروشگاه کاملاً غیررسمی و فان برای تولید مرچ میم از بادمجون عینکی مهدی جهان (@mehdijahaan) است. این سایت به صورت <strong>پارودی</strong> از فروشگاه‌های ایرانی مانند گیم‌گریپ، گیم‌آپ، ترکزماین و فورجی‌گی‌یو طراحی شده.</p>
+      <h2>مهدی جهان کیه؟</h2>
+      <p>یه یوتیوبر، استریمر، ادیتور و طبق بیو توییترش <strong>مهندس هوافضا</strong> ساکن آلمان که با ویدیوهای خنده‌دار و چالش‌های دیوار حدود ۲۰۰ هزار مشترک یوتیوب داره.</p>
+      <h2>چرا گسلایت استودیو؟</h2>
+      <p>چون همه‌چیز از صفر و صرفاً جهت خنده توسط <strong>Gaslight Studios</strong> طراحی شده. هدف فقط لبخند زدن شماست.</p>
+      <h2>سلب مسئولیت</h2>
+      <p>این سایت <strong>هیچ ارتباطی</strong> با مهدی جهان نداره. تمام طرح‌ها صرفاً جنبه طنز دارند. 💀</p>
+    </div></div></div>`;
+  },
+  contact:()=>{crumb([{h:'/',t:'خانه'},{t:'تماس با ما'}]);
+    return `<div class="page crumb-on"><div class="ctn"><div class="doc">
+      <h2>تماس با ما 📞</h2>
+      <p>از راه‌های زیر می‌تونی با ما در ارتباط باشی (همه‌اش میمه، یادت نره):</p>
+      <div class="cgrid">
+        <a class="ci2" href="#"><div class="i">📧</div><div><b>ایمیل</b><span>salam@gaslight.studio</span></div></a>
+        <a class="ci2" href="#"><div class="i">✈️</div><div><b>تلگرام</b><span>@Mehdijahaaan (خود مهدی)</span></div></a>
+        <a class="ci2" href="#"><div class="i">📺</div><div><b>یوتیوب</b><span>youtube.com/@mehdijahaan</span></div></a>
+        <a class="ci2" href="#"><div class="i">🎮</div><div><b>کیک</b><span>kick.com/mehdijahaan</span></div></a>
+      </div>
+    </div></div></div>`;
+  },
+  faq:()=>{crumb([{h:'/',t:'خانه'},{t:'سؤالات متداول'}]);
+    return `<div class="page crumb-on"><div class="ctn"><div class="doc">
+      <h2>سؤالات متداول ❓</h2>
+      <h2>محصولات واقعی هستن؟</h2>
+      <p>نه جان همگی میمه. 😂</p>
+      <h2>واقعاً از آلمان پست می‌شه؟</h2>
+      <p>فقط اگه لشکر ۲۰۰۰ نفری بیاد در خونه‌ت.</p>
+      <h2>چرا همه قیمت‌ها بیلیاردیه؟</h2>
+      <p>چون نرخ تورم مهندسی هوافضا بالاست.</p>
+      <h2>پرداخت واقعیه؟</h2>
+      <p>نه، فقط یه تُست می‌بینی و هیچی نمی‌شه.</p>
+      <h2>ادیتور واقعاً ثروتمند میشه؟</h2>
+      <p>اگه تو بخندی، آره 🤣</p>
+    </div></div></div>`;
+  },
+  shipping:()=>{crumb([{h:'/',t:'خانه'},{t:'ارسال'}]);
+    return `<div class="page crumb-on"><div class="ctn"><div class="doc">
+      <h2>اطلاعات ارسال 🚚</h2>
+      <table class="tbl"><thead><tr><th>روش ارسال</th><th>زمان تحویل</th><th class="col">هزینه</th></tr></thead><tbody>
+        <tr><td>لشکر ۲۰۰۰ نفری 🔥</td><td>۲۰ دقیقه</td><td class="col">۲۰۰ میلیارد تومان</td></tr>
+        <tr><td>ادیتور شخصی</td><td>۲۴ ساعت</td><td class="col">۱۰۰ میلیارد تومان</td></tr>
+        <tr><td>پست هوافضا 🚀</td><td>۲ روز</td><td class="col">۵۰ میلیارد تومان</td></tr>
+        <tr><td>دیوارچی دربست</td><td>همین الان (بن میشی)</td><td class="col">رایگان</td></tr>
+      </tbody></table>
+      <div class="note"><span class="ic">🤡</span><div>جدول بالا هم مثل بقیه سایت، میمه.</div></div>
+    </div></div></div>`;
+  },
+  returns:()=>{crumb([{h:'/',t:'خانه'},{t:'بازگشت کالا'}]);
+    return `<div class="page crumb-on"><div class="ctn"><div class="doc"><h2>شرایط بازگشت کالا ↩️</h2><p>اگر از بادمجون خندون نیومدی (که محاله) می‌تونی سفارش رو به خود مهدی برگردونی. شرط می‌بندیم خندیدی.</p></div></div></div>`},
+  privacy:()=>{crumb([{h:'/',t:'خانه'},{t:'حریم خصوصی'}]);
+    return `<div class="page crumb-on"><div class="ctn"><div class="doc"><h2>حریم خصوصی 🔒</h2><p>ما هیچ اطلاعاتی ازت جمع نمی‌کنیم. اصلاً خریدی در کار نیست. خیالت راحت.</p></div></div></div>`},
+  terms:()=>{crumb([{h:'/',t:'خانه'},{t:'قوانین'}]);
+    return `<div class="page crumb-on"><div class="ctn"><div class="doc"><h2>قوانین ⚖️</h2><p>با دیدن این سایت قبول می‌کنی که به هر قیمتی شده به مهدی بخندی و ادیتورش رو ثروتمند کنی. 🤣</p></div></div></div>`},
+  blog:()=>{crumb([{h:'/',t:'خانه'},{t:'بلاگ'}]);
+    return `<div class="page crumb-on"><div class="ctn"><div class="doc"><h2>بلاگ ✍️</h2><p>به زودی: داستان واقعی چرا مهدی مهندس هوافضا شد و چرا آلمان؟ 🚀</p></div></div></div>`},
+  careers:()=>{crumb([{h:'/',t:'خانه'},{t:'همکاری'}]);
+    return `<div class="page crumb-on"><div class="ctn"><div class="doc"><h2>همکاری با ما 🤝</h2><p>اگه می‌خوای تو لشکر ۲۰۰۰ نفری ما باشی، کافیه یه ویدیو خنده‌دار از مهدی ادیت کنی. حقوق: هر سری ما بخندیم ادیتورمون ثروتمندتر میشه.</p></div></div></div>`},
+  press:()=>{crumb([{h:'/',t:'خانه'},{t:'مطبوعات'}]);
+    return `<div class="page crumb-on"><div class="ctn"><div class="doc"><h2>مطبوعات 📰</h2><p>در حال حاضر هیچ نشریه‌ای جرأت نکرده این سایت رو پوشش بده.</p></div></div></div>`},
+  404:()=>{crumb([{h:'/',t:'خانه'},{t:'پیدا نشد'}]);
+    return `<div class="page crumb-on"><div class="ctn"><div class="empty"><div class="big">💀</div><h2 style="font-size:32px;font-weight:700;margin-bottom:10px">404 - اینجا بن شدی!</h2><p>همونطور که مهدی از دیوار بن شد، تو هم از این صفحه بن شدی 🤣</p><a class="btn p" href="/" data-link style="margin-top:20px;display:inline-flex">برگرد به خانه ←</a></div></div></div>`}
+};
+
+function render(){
+  upd();
+  const p=location.pathname.replace(/\/+$/,'')||'/';
+  let h='';const app=document.getElementById('app');
+  app.classList.remove('ready');
+  if(p==='/'||p==='') h=PAGE.home();
+  else if(p==='/products') h=PAGE.products(null);
+  else if(p==='/cart') h=PAGE.cart();
+  else if(p==='/about') h=PAGE.about();
+  else if(p==='/contact') h=PAGE.contact();
+  else if(p==='/faq') h=PAGE.faq();
+  else if(p==='/shipping') h=PAGE.shipping();
+  else if(p==='/returns') h=PAGE.returns();
+  else if(p==='/privacy') h=PAGE.privacy();
+  else if(p==='/terms') h=PAGE.terms();
+  else if(p==='/blog') h=PAGE.blog();
+  else if(p==='/careers') h=PAGE.careers();
+  else if(p==='/press') h=PAGE.press();
+  else if(p.startsWith('/category/')) h=PAGE.products(p.split('/')[2]);
+  else if(p.startsWith('/product/')) h=PAGE.product(p.split('/')[2]);
+  else h=PAGE[404]();
+  app.innerHTML=h;
+  requestAnimationFrame(()=>app.classList.add('ready'));
+  document.querySelectorAll('.sub .l').forEach(a=>{const h=a.getAttribute('href');const on=h==='/'?p==='/':p.startsWith(h);a.classList.toggle('on',on)});
+}
+
+/* ============ LOADER ANIMATION ============ */
+(function(){
+  const top=document.getElementById('ld-top'),big=document.getElementById('ld-big'),b1=document.getElementById('ld-b1'),b2=document.getElementById('ld-b2'),bar=document.getElementById('ld-bar'),L=document.getElementById('loader');
+  const text="گــســلایــت اســتــودیــو";
+  big.innerHTML=text.split('').map(c=>`<span>${c===' '?'&nbsp;':c}</span>`).join('');
+  const spans=[...big.querySelectorAll('span')];
+  spans.forEach(s=>{s.style.opacity=0;s.style.transform='translateY(12px)';s.style.display='inline-block';s.style.transition='opacity .5s ease, transform .5s ease'});
+  function dismiss(){
+    L.classList.add('gone');
+    document.body.classList.remove('loading');
+    const a=document.getElementById('app'); if(a) a.classList.add('ready');
+    setTimeout(()=>{L.style.display='none';render()},600);
+  }
+  function begin(){
+    top.style.opacity=1;
+    setTimeout(()=>{
+      spans.forEach((s,i)=>setTimeout(()=>{s.style.opacity=1;s.style.transform='translateY(0)'},i*70));
+      setTimeout(()=>{b1.style.opacity=1;b2.style.opacity=1},spans.length*70+300);
+    },500);
+    let pct=0;
+    const bt=setInterval(()=>{pct=Math.min(100,pct+3+Math.random()*4);bar.style.width=pct+'%';if(pct>=100)clearInterval(bt)},60);
+    setTimeout(dismiss,3400);
+  }
+  const kick=()=>setTimeout(begin,150);
+  if(document.readyState==='complete') kick();
+  else window.addEventListener('load',kick);
+  // safety fallback — never trap the user
+  setTimeout(dismiss,5000);
+})();
+</script>
+</body>
+</html>
